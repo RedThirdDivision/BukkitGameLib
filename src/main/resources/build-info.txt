@@ -1,0 +1,12 @@
+###### This file contains information related to the build ######
+######### Please include this file with all bug reports #########
+
+Short Commit ID: ${git.commit.id.abbrev}
+Full Commit ID: ${git.commit.id}
+Commit message: ${git.commit.message.full}
+Short commit message: ${git.commit.message.short}
+Commiter email: ${git.commit.user.email}
+Commiter name: ${git.commit.user.name}
+Branch: ${git.branch}
+Commit time: ${git.commit.time}
+Build time: ${git.build.time}
