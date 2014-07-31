@@ -27,7 +27,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> BukkitMoveEvent.java
  * 
- * @author: <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class BukkitMoveEvent implements Listener {
 
