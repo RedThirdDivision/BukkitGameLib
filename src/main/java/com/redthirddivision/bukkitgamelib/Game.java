@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> Game.java
- * 
+ *
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public abstract class Game {
@@ -53,19 +53,18 @@ public abstract class Game {
      * @param name the name of teh arena
      * @param owner the {@link com.redthirddivision.bukkitgamelib.GamePlugin} which owns this game
      * @param state the actual arenastate (should be stored in some kind of database)
-     * @param min the min location, use worldedit for a selection
-     * @param max the max location, use worldedit for a selection
+     * @param selection the worldedit selection. Use {@link com.redthirddivision.bukkitgamelib.utils.SelectionManager#getSelection(org.bukkit.entity.Player) }
      * @param minplayers the min number of palyers needed to start the game
      * @param maxplayers the max number of players allowed
      * @param sign the join sign
      * @param joinPermission the permission needed to use the join sign
      */
-    public Game(int id, String name, GamePlugin owner, ArenaState state, Location min, Location max, int minplayers, int maxplayers, Sign sign, String joinPermission) {
+    public Game(int id, String name, GamePlugin owner, ArenaState state, Location[] selection, int minplayers, int maxplayers, Sign sign, String joinPermission) {
         this.id = id;
         this.name = name;
         this.owner = owner;
-        this.min = min;
-        this.max = max;
+        this.min = selection[0];
+        this.max = selection[1];
         this.minplayers = minplayers;
         this.maxplayers = maxplayers;
         this.sign = sign;
