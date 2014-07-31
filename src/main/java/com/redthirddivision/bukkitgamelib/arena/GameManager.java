@@ -20,6 +20,12 @@ import com.redthirddivision.bukkitgamelib.GamePlugin;
 import java.util.HashMap;
 import org.bukkit.entity.Player;
 
+/**
+ * <strong>Project:</strong> R3DBukkitGameLib <br>
+ * <strong>File:</strong> GameManager.java
+ * 
+ * @author: <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ */
 public class GameManager {
 
     private final HashMap<String, Game> arenas = new HashMap<>();

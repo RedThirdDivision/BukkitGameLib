@@ -31,6 +31,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <strong>Project:</strong> R3DBukkitGameLib <br>
+ * <strong>File:</strong> BukkitInventoryEvent.java
+ * 
+ * @author: <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ */
 public class BukkitInventoryEvent implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)

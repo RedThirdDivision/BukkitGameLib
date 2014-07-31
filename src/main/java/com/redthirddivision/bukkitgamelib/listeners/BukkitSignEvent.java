@@ -25,6 +25,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+/**
+ * <strong>Project:</strong> R3DBukkitGameLib <br>
+ * <strong>File:</strong> BukkitSignEvent.java
+ * 
+ * @author: <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ */
 public class BukkitSignEvent implements Listener {
 
     @EventHandler

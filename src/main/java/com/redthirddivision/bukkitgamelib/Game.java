@@ -28,6 +28,12 @@ import org.bukkit.Sound;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
+/**
+ * <strong>Project:</strong> R3DBukkitGameLib <br>
+ * <strong>File:</strong> Game.java
+ * 
+ * @author: <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ */
 public abstract class Game {
 
     private final int id, minplayers, maxplayers;
@@ -40,6 +46,20 @@ public abstract class Game {
     private ArenaState state;
     private int taskid;
 
+    /**
+     * Creates a new Game instances and registers it in the {@link com.redthirddivision.bukkitgamelib.arena.GameManager}
+     *
+     * @param id the id of the arena, only used internal
+     * @param name the name of teh arena
+     * @param owner the {@link com.redthirddivision.bukkitgamelib.GamePlugin} which owns this game
+     * @param state the actual arenastate (should be stored in some kind of database)
+     * @param min the min location, use worldedit for a selection
+     * @param max the max location, use worldedit for a selection
+     * @param minplayers the min number of palyers needed to start the game
+     * @param maxplayers the max number of players allowed
+     * @param sign the join sign
+     * @param joinPermission the permission needed to use the join sign
+     */
     public Game(int id, String name, GamePlugin owner, ArenaState state, Location min, Location max, int minplayers, int maxplayers, Sign sign, String joinPermission) {
         this.id = id;
         this.name = name;
@@ -54,62 +74,144 @@ public abstract class Game {
         GameManager.getInstance().load(this);
     }
 
+    /**
+     * Called after a player joined the arena
+     *
+     * @param p the player who joined
+     */
     public abstract void onPlayerAddToArena(Player p);
 
+    /**
+     * Called after a player left the arena
+     *
+     * @param p the player who left
+     */
     public abstract void onPlayerRemoveFromArena(Player p);
 
+    /**
+     * Called after a player started spectating the arena
+     *
+     * @param p the player who is spectating
+     */
     public abstract void onPlayerStartSpectating(Player p);
 
+    /**
+     * Called before the arena starts
+     */
     public abstract void onArenaStart();
 
+    /**
+     * Called before the arena stops
+     */
     public abstract void onArenaStop();
 
-    public abstract boolean onStatusChange();
+    /**
+     * Called afer the status of the arena changed
+     */
+    public abstract void onStatusChange();
 
+    /**
+     * @return the id of the arena
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * The players who are alive
+     *
+     * @return {@link java.util.ArrayList}
+     */
     public ArrayList<PlayerData> getAlivePlayers() {
         return alive;
     }
 
+    /**
+     * The players who are spectating
+     *
+     * @return {@link java.util.ArrayList}
+     */
     public ArrayList<PlayerData> getSpecators() {
         return spectator;
     }
 
+    /**
+     * The name of the Arena
+     *
+     * @return {@link java.lang.String}
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * The min number of players
+     *
+     * @return {@link java.lang.Integer}
+     */
     public int getMinPlayers() {
         return minplayers;
     }
 
+    /**
+     * Gets the number of alive players
+     *
+     * @return {@link java.lang.Integer}
+     */
     public int getAlive() {
         return alive.size();
     }
 
+    /**
+     * Gets the number of spectating players
+     *
+     * @return {@link java.lang.Integer}
+     */
     public int getSpectators() {
         return spectator.size();
     }
 
+    /**
+     * Gets the number of al players
+     *
+     * @return {@link java.lang.Integer}
+     */
     public int getAllPlayers() {
         return alive.size() + spectator.size();
     }
 
+    /**
+     * Gets the state of the arena
+     *
+     * @return {@link com.redthirddivision.bukkitgamelib.Game.ArenaState}
+     */
     public ArenaState getState() {
         return this.state;
     }
 
+    /**
+     * The max number of players
+     *
+     * @return {@link java.lang.Integer}
+     */
     public int getMaxPlayers() {
         return maxplayers;
     }
 
+    /**
+     * Gets the plugin which is owning this Game
+     *
+     * @return {@link com.redthirddivision.bukkitgamelib.GamePlugin}
+     */
     public GamePlugin getOwningPlugin() {
         return owner;
     }
 
+    /**
+     * Gets all PlayerData's in the game
+     *
+     * @return {@link java.util.ArrayList}
+     */
     public ArrayList<PlayerData> getAllDatas() {
         ArrayList<PlayerData> ret = new ArrayList<>();
         ret.addAll(alive);
@@ -117,6 +219,13 @@ public abstract class Game {
         return ret;
     }
 
+    /**
+     * Used to send a colored message to a player
+     *
+     * @param p the receiver of the message
+     * @param type the type of the message
+     * @param msg the actual message without color codes
+     */
     public void sendMessage(Player p, MessageType type, String msg) {
         String pre = "";
         switch (type) {
@@ -130,12 +239,23 @@ public abstract class Game {
         p.sendMessage(pre + msg);
     }
 
+    /**
+     * Broadcasts a message to all the players in the game (Spectators included)
+     *
+     * @param type the type of the message
+     * @param msg the actual message without color codes
+     */
     public void broadcastMessage(MessageType type, String msg) {
         for (PlayerData pd : getAllDatas()) {
             sendMessage(pd.getPlayer(), type, msg);
         }
     }
 
+    /**
+     * Puts a Player in spectator mode
+     *
+     * @param p the player who will be spectatorx
+     */
     public void setSpectator(final Player p) {
         p.getServer().getScheduler().scheduleSyncDelayedTask(owner, new Runnable() {
 
@@ -163,6 +283,11 @@ public abstract class Game {
 
     }
 
+    /**
+     * Adds a player to the game
+     *
+     * @param p the player to add
+     */
     public void addPlayer(final Player p) {
         if (GameManager.getInstance().getArena(p) != null) {
             sendMessage(p, MessageType.ERROR, "You can't be in more than one game at a time.");
@@ -194,11 +319,16 @@ public abstract class Game {
         if (state == ArenaState.WAITING) start();
 
         alive.add(new PlayerData(p, this));
-        onPlayerAddToArena(p);
         broadcastMessage(MessageType.INFO, p.getDisplayName() + " has joined the game.");
         updateStatusAndSign(state);
+        onPlayerAddToArena(p);
     }
 
+    /**
+     * Removes a player from the game
+     *
+     * @param pl the player to remove
+     */
     public void removePlayer(final PlayerData pl) {
         pl.restorePlayerData();
 
@@ -232,23 +362,47 @@ public abstract class Game {
         }
     }
 
+    /**
+     * Removes a player from the game
+     *
+     * @param p the player to remove
+     */
     public void removePlayer(Player p) {
         PlayerData pl = getPlayer(p);
         removePlayer(pl);
     }
 
+    /**
+     * Checks if the Player is playing in this game
+     *
+     * @param p the player to check for
+     * @return {@link java.lang.Boolean}
+     */
     public boolean containsPlayer(Player p) {
         return getPlayer(p) != null;
     }
 
+    /**
+     * Checks if the game is started
+     *
+     * @return {@link java.lang.Boolean}
+     */
     public boolean isStarted() {
         return state != ArenaState.DISABLED && state != ArenaState.WAITING;
     }
 
+    /**
+     * Checks if the game is disabled
+     *
+     * @return {@link java.lang.Boolean}
+     */
     public boolean isDisabled() {
         return state == ArenaState.DISABLED;
     }
 
+    /**
+     * Starts the countdown for the game to start
+     */
     public void start() {
         updateStatusAndSign(ArenaState.COUNTDING_DOWN);
 
@@ -298,6 +452,11 @@ public abstract class Game {
         }, 0, 20);
     }
 
+    /**
+     * Stops the game
+     *
+     * @param winner if set, the Player who won the game
+     */
     public void stop(final Player winner) {
         onArenaStop();
         updateStatusAndSign(ArenaState.WON);
@@ -327,6 +486,12 @@ public abstract class Game {
         updateStatusAndSign(ArenaState.WAITING);
     }
 
+    /**
+     * Transforms a Player to a PlayerData
+     *
+     * @param p the Player to transform
+     * @return {@link com.redthirddivision.bukkitgamelib.arena.PlayerData}
+     */
     public PlayerData getPlayer(Player p) {
         for (PlayerData pd : getAllDatas()) {
             if (pd.isForPlayer(p)) return pd;
@@ -334,6 +499,11 @@ public abstract class Game {
         return null;
     }
 
+    /**
+     * Changes the state of the game to the given one
+     *
+     * @param state The state to set the game state to
+     */
     public void updateStatusAndSign(ArenaState state) {
         this.state = state;
         onStatusChange();
@@ -344,10 +514,12 @@ public abstract class Game {
         this.sign.update(true);
     }
 
-    public void setWinner(Player p) {
-        stop(p);
-    }
-
+    /**
+     * Used to check if a {@link org.bukkit.Location} is contained in the arena
+     *
+     * @param v the location to check for
+     * @return {@link java.lang.Boolean}
+     */
     public boolean containsBlock(Location v) {
         if (v.getWorld() != min.getWorld()) return false;
         final double x = v.getX();

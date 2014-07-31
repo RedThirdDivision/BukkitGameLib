@@ -23,6 +23,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+/**
+ * <strong>Project:</strong> R3DBukkitGameLib <br>
+ * <strong>File:</strong> BukkitMoveEvent.java
+ * 
+ * @author: <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ */
 public class BukkitMoveEvent implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
