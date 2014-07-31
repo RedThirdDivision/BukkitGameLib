@@ -63,7 +63,6 @@
     </distributionManagement>-->
     
     <build>
-
         <defaultGoal>clean install</defaultGoal>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
@@ -79,56 +78,8 @@
                 </includes>
             </resource>			
         </resources>
+        
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifestEntries>
-                            <Implementation-Title>RedThirdDivision</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor>RedThirdDivision</Implementation-Vendor>
-                            <Specification-Title>RedThirdDivision</Specification-Title>
-                            <Specification-Version>${project.version}</Specification-Version>
-                            <Specification-Vendor>RedThirdDivision</Specification-Vendor>
-                        </manifestEntries>                        
-                        <addMavenDescriptor>true</addMavenDescriptor>
-                        <pomPropertiesFile>true</pomPropertiesFile>
-                        <manifest>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addClasspath>false</addClasspath>
-                            <classpathLayoutType>custom</classpathLayoutType>
-                            <customClasspathLayout>../lib/$${artifact.artifactId}.$${artifact.extension}</customClasspathLayout>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-           
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <minimizeJar>true</minimizeJar>
-                            <artifactSet>
-                                <includes>
-                                    <include>de.TheJeterLP.Bukkit:BukkitTools</include>
-                                </includes>
-                            </artifactSet>                           
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -192,11 +143,7 @@
         <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public</url>
-        </repository>      
-        <repository>
-            <id>bukkittools-repo</id>
-            <url>http://jeterlp.admincmd.com/maven-repo/</url>
-        </repository>   
+        </repository>       
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>
@@ -214,13 +161,6 @@
             <groupId>com.sk89q</groupId>
             <artifactId>worldedit</artifactId>
             <version>6.0.0-SNAPSHOT</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>de.TheJeterLP.Bukkit</groupId>
-            <artifactId>BukkitTools</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
