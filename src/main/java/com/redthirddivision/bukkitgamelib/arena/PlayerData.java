@@ -58,13 +58,13 @@ public class PlayerData {
         health = ((Damageable) p).getHealth();
         flying = p.getAllowFlight();
 
-        player.setGameMode(GameMode.ADVENTURE);
+        player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(false);
         player.setFlying(false);
         player.setSleepingIgnored(true);
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
-        player.setExhaustion(20.0F);
+        player.setExhaustion(40.0F);
         player.setExp(0F);
         player.setLevel(0);
         Utils.clearInventory(player);
