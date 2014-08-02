@@ -256,30 +256,23 @@ public abstract class Game {
      * @param p the player who will be spectatorx
      */
     public void setSpectator(final Player p) {
-        p.getServer().getScheduler().scheduleSyncDelayedTask(owner, new Runnable() {
+        if (getPlayer(p) == null) return;
+        PlayerData pd = getPlayer(p);
 
-            @Override
-            public void run() {
-                if (getPlayer(p) == null) return;
-                PlayerData pd = getPlayer(p);
-                alive.remove(pd);
-                spectator.add(pd);
-                updateStatusAndSign(state);
+        if (alive.isEmpty()) {
+            updateStatusAndSign(ArenaState.WON);
+            stop(null);
+            return;
+        } else if (alive.size() == 1) {
+            updateStatusAndSign(ArenaState.WON);
+            stop(alive.get(0).getPlayer());
+            return;
+        }
 
-                if (alive.isEmpty()) {
-                    updateStatusAndSign(ArenaState.WON);
-                    stop(null);
-                    return;
-                } else if (alive.size() == 1) {
-                    updateStatusAndSign(ArenaState.WON);
-                    stop(alive.get(0).getPlayer());
-                    return;
-                }
-
-                pd.startSpectating();
-            }
-        }, 2);
-
+        alive.remove(pd);
+        spectator.add(pd);
+        updateStatusAndSign(state);
+        pd.startSpectating();
     }
 
     /**
