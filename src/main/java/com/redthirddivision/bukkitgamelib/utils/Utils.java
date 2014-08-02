@@ -18,6 +18,7 @@ package com.redthirddivision.bukkitgamelib.utils;
 import com.redthirddivision.bukkitgamelib.Game;
 import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +33,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> Utils.java
- * 
+ *
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class Utils {
@@ -54,9 +55,7 @@ public class Utils {
     public static Location deserialLocation(String s) {
         String[] a = s.split(";");
         World w = Bukkit.getWorld(a[3]);
-        if (w == null) {
-            w = Bukkit.getWorlds().get(0);
-        }
+        Validate.notNull(w, "The world cannot be null!");
         double x = Double.parseDouble(a[0]);
         double y = Double.parseDouble(a[1]);
         double z = Double.parseDouble(a[2]);

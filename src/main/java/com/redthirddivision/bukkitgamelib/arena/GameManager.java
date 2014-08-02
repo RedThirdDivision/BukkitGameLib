@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> GameManager.java
- * 
+ *
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class GameManager {
@@ -43,6 +43,14 @@ public class GameManager {
 
     public GamePlugin getPlugin() {
         return pl;
+    }
+
+    public String getName() {
+        String ret = pl.getName();
+        if (ret.length() > 12) {
+            ret = ret.substring(0, 12);
+        }
+        return ret;
     }
 
     public boolean isExisting(String name) {

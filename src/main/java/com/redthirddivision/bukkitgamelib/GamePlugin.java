@@ -29,13 +29,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public abstract class GamePlugin extends JavaPlugin {
-
+    
     private GameManager manager;
-
+    
     public abstract void onPluginStart();
-
+    
     public abstract void onPluginStop();
-
+    
     @Override
     public void onEnable() {
         manager = new GameManager(this);
@@ -45,14 +45,18 @@ public abstract class GamePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BukkitSignEvent(), this);
         onPluginStart();
     }
-
+    
     @Override
     public void onDisable() {
+        getServer().getScheduler().cancelTasks(this);
+        for (Game g : manager.getArenas().values()) {
+            if (g.isStarted()) g.stop(null);
+        }
         onPluginStop();
     }
-
+    
     public GameManager getGameManager() {
         return manager;
     }
-
+    
 }

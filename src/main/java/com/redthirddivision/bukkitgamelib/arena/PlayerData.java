@@ -29,7 +29,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> PlayerData.java
- * 
+ *
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class PlayerData {
@@ -88,7 +88,7 @@ public class PlayerData {
     public boolean isForPlayer(Player p) {
         return player.getUniqueId().equals(p.getUniqueId());
     }
-   
+
     public Player getPlayer() {
         return player;
     }
@@ -127,13 +127,5 @@ public class PlayerData {
                 a.sendMessage(player, MessageType.INFO, "You are now spectating the game.");
             }
         }, 4);
-    }
-
-    public enum PlayerType {
-
-        TRIBUTE,
-        MINOTAUR,
-        SPECTATOR;
-
     }
 }

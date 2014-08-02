@@ -39,7 +39,7 @@ public class BukkitSignEvent implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock().getState() instanceof Sign) {
             Sign s = (Sign) event.getClickedBlock().getState();
-            if (s.getLine(0).equalsIgnoreCase("§6[" + GameManager.getInstance().getPlugin().getName() + "]")) {
+            if (s.getLine(0).equalsIgnoreCase("§6[" + GameManager.getInstance().getName() + "]")) {
                 String name = s.getLine(1);
                 Game a = GameManager.getInstance().getArena(name);
 

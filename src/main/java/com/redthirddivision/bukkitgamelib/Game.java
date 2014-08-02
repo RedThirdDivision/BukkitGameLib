@@ -506,7 +506,7 @@ public abstract class Game {
     public void updateStatusAndSign(ArenaState state) {
         this.state = state;
         onStatusChange();
-        this.sign.setLine(0, "§6[" + owner.getName() + "]");
+        this.sign.setLine(0, "§6[" + GameManager.getInstance().getName() + "]");
         this.sign.setLine(1, name);
         this.sign.setLine(2, state.getText());
         this.sign.setLine(3, "§a" + alive.size() + "§r/§c" + spectator.size() + "§r/§7" + maxplayers);
