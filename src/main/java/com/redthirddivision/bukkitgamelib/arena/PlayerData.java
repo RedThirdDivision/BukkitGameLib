@@ -33,31 +33,31 @@ import org.bukkit.inventory.meta.ItemMeta;
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class PlayerData {
-
+    
     private final Player player;
     private final Game a;
     private final ItemStack[] inventory, armor;
-    private final int level;
-    private final float xp, hunger;
+    private final int level, foodlevel;
+    private final float xp;
     private final GameMode gm;
     private final double maxhealth, health;
     private final boolean flying;
     private boolean spectator = false;
-
+    
     public PlayerData(Player p, Game a) {
         this.player = p;
         this.a = a;
-
+        
         inventory = p.getInventory().getContents();
         armor = p.getInventory().getArmorContents();
         gm = player.getGameMode();
         xp = p.getExp();
         level = p.getLevel();
-        hunger = p.getExhaustion();
+        foodlevel = p.getFoodLevel();
         maxhealth = ((Damageable) p).getMaxHealth();
         health = ((Damageable) p).getHealth();
         flying = p.getAllowFlight();
-
+        
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(false);
         player.setFlying(false);
@@ -70,12 +70,12 @@ public class PlayerData {
         Utils.clearInventory(player);
         player.updateInventory();
     }
-
+    
     public void restorePlayerData() {
         if (player == null) return;
         player.setAllowFlight(flying);
         player.setMaxHealth(maxhealth);
-        player.setExhaustion(hunger);
+        player.setFoodLevel(foodlevel);
         player.setHealth(health);
         player.setGameMode(gm);
         player.getInventory().setArmorContents(armor);
@@ -84,28 +84,28 @@ public class PlayerData {
         player.setLevel(level);
         player.setSleepingIgnored(false);
     }
-
+    
     public boolean isForPlayer(Player p) {
         return player.getUniqueId().equals(p.getUniqueId());
     }
-
+    
     public Player getPlayer() {
         return player;
     }
-
+    
     public boolean isSpectator() {
         return spectator;
     }
-
+    
     public void startSpectating() {
         spectator = true;
-
+        
         for (PlayerData alive : a.getAlivePlayers()) {
             alive.getPlayer().hidePlayer(player);
         }
-
+        
         Utils.clearInventory(player);
-
+        
         Bukkit.getScheduler().scheduleSyncDelayedTask(a.getOwningPlugin(), new Runnable() {
             @Override
             public void run() {
@@ -113,17 +113,17 @@ public class PlayerData {
                 ItemMeta meta = compass.getItemMeta();
                 meta.setDisplayName("§6Teleport");
                 compass.setItemMeta(meta);
-
+                
                 ItemStack ball = new ItemStack(Material.SLIME_BALL);
                 ItemMeta ballmeta = ball.getItemMeta();
                 ballmeta.setDisplayName("§5Quit");
                 ball.setItemMeta(ballmeta);
-
+                
                 player.getInventory().addItem(compass, ball);
                 player.setAllowFlight(true);
-
+                
                 a.onPlayerStartSpectating(player);
-
+                
                 a.sendMessage(player, MessageType.INFO, "You are now spectating the game.");
             }
         }, 4);
