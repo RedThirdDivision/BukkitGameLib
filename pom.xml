@@ -15,13 +15,13 @@
         <developerConnection>scm:git:git@github.com:RedThirdDivision/R3DBukkitGameLib.git</developerConnection>
     </scm>
     
-     <licenses>
+    <licenses>
         <license>
             <name>Apache License v2</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
-    
+       
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -48,24 +48,31 @@
         </developer>
     </developers>
     
-    <!--<distributionManagement>
+    <distributionManagement>
         <repository>
-            <id>bukkit-plugin-release</id>
-            <name>Bukkit Plugins Release</name>
-            <url></url>
-        </repository>
-
+            <id>r3d</id>
+            <url>ftp://ftp.redthirddivision.com/maven-repo/</url>
+        </repository> 
+        
         <snapshotRepository>
-            <id>bukkit-plugin-snapshot</id>
-            <name>Bukkit Plugins Snapshot</name>
-            <url></url>
-        </snapshotRepository>
-    </distributionManagement>-->
+            <id>r3d</id>
+            <url>ftp://ftp.redthirddivision.com/maven-repo/</url>
+        </snapshotRepository>    
+    </distributionManagement>
     
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
+        
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-alpha-6</version>
+            </extension>
+        </extensions>
+    
 
         <resources>
             <resource>

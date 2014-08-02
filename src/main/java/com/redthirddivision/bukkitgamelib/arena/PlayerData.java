@@ -18,7 +18,6 @@ package com.redthirddivision.bukkitgamelib.arena;
 import com.redthirddivision.bukkitgamelib.Game;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import com.redthirddivision.bukkitgamelib.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
