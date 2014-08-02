@@ -64,7 +64,7 @@ public class PlayerData {
         player.setSleepingIgnored(true);
         player.setMaxHealth(20.0);
         player.setHealth(20.0);
-        player.setExhaustion(40.0F);
+        player.setFoodLevel(20);
         player.setExp(0F);
         player.setLevel(0);
         Utils.clearInventory(player);
