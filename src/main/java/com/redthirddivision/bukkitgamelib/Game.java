@@ -259,6 +259,9 @@ public abstract class Game {
         if (getPlayer(p) == null) return;
         PlayerData pd = getPlayer(p);
 
+        alive.remove(pd);
+        spectator.add(pd);
+
         if (alive.isEmpty()) {
             updateStatusAndSign(ArenaState.WON);
             stop(null);
@@ -269,8 +272,6 @@ public abstract class Game {
             return;
         }
 
-        alive.remove(pd);
-        spectator.add(pd);
         updateStatusAndSign(state);
         pd.startSpectating();
     }
