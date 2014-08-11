@@ -39,9 +39,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class Utils {
 
     /**
-     * Replaces all possible ColorCodes starting with & to a String minecraft understands
-     * @param message
-     * @return 
+     * Replaces all possible ColorCodes starting with &amp; to a String minecraft understands
+     * @param message the message which contains the unreplaced color codes
+     * @return the message with replaced color codes
      */
     public static String replaceColors(String message) {
         return message.replaceAll("&((?i)[0-9a-fk-or])", "§$1");
@@ -49,17 +49,17 @@ public class Utils {
 
     /**
      * Removes all color codes form a String
-     * @param string
-     * @return 
+     * @param string the message with replaced color codes
+     * @return the message without any colors
      */
     public static String removeColors(String string) {
         return string.replaceAll("§((?i)[0-9a-fk-or])", "");
     }
 
     /**
-     * USed to transform a Location object to a String
-     * @param l
-     * @return 
+     * Used to transform a Location object to a String
+     * @param l the Location we want to transform
+     * @return a String which can be stored easiliy
      */
     public static String serialLocation(Location l) {
         int pitch = Integer.valueOf(String.valueOf(l.getPitch()).split("\\.")[0]);
@@ -69,8 +69,8 @@ public class Utils {
 
     /**
      * Used to get a Location object from a serialized String using {@link #serialLocation(org.bukkit.Location)}
-     * @param s
-     * @return 
+     * @param s the String we want to get the Location from
+     * @return a Location made out of the String
      */
     public static Location deserialLocation(String s) {
         String[] a = s.split(";");
@@ -87,9 +87,9 @@ public class Utils {
 
     /**
      * Gets the Block a Player is looking at
-     * @param player
-     * @param range
-     * @return 
+     * @param player the player who looks at a block
+     * @param range the range of the looking
+     * @return the Block the player looks at the given range
      */
     public static Block getBlockLooking(Player player, int range) {
         Block b = player.getTargetBlock(null, range);
@@ -97,11 +97,11 @@ public class Utils {
 
     }
 
-    /**
-     * Gets the Location a Player is looking at.
-     * @param player
-     * @param range
-     * @return 
+   /**
+     * Gets the Location a Player is looking at
+     * @param player the player who looks at a location
+     * @param range the range of the looking
+     * @return the Location the player looks at the given range
      */
     public static Location getLocationLooking(Player player, int range) {
         Block b = getBlockLooking(player, range);
@@ -110,7 +110,7 @@ public class Utils {
 
     /**
      * Completely cleares a players inventory including armor
-     * @param p 
+     * @param p the player which inventory will be cleared
      */
     public static void clearInventory(Player p) {
         p.getInventory().clear();
@@ -122,8 +122,8 @@ public class Utils {
 
     /**
      * Creates an inventory containing all player heads to use for spectator mode.
-     * @param a
-     * @return 
+     * @param a the game we want to create the inventory from
+     * @return an Inventory which is used internally
      */
     public static Inventory getSpectatorInventory(Game a) {
         Inventory ret = Bukkit.createInventory(null, 9 * 5, "Alive: ");
@@ -140,9 +140,9 @@ public class Utils {
 
     /**
      * Sends a message to a player
-     * @param p
-     * @param type
-     * @param msg 
+     * @param p the receiver of the message
+     * @param type the type of the message, used for coloring
+     * @param msg the message to send
      */
     public static void sendMessage(Player p, MessageType type, String msg) {
         String pre = "";

@@ -95,7 +95,7 @@ public class PlayerData {
     /**
      * Checks if this instance is used for a Player
      * @param p the Player we want to look for
-     * @return 
+     * @return true if this instance belongs to the player
      */
     public boolean isForPlayer(Player p) {
         return player.getUniqueId().equals(p.getUniqueId());
@@ -103,7 +103,7 @@ public class PlayerData {
 
     /**
      * Returns the Player instance stored in this object
-     * @return 
+     * @return the player
      */
     public Player getPlayer() {
         return player;
@@ -111,7 +111,7 @@ public class PlayerData {
 
     /**
      * Checks if the Player is spectating
-     * @return 
+     * @return true if the player is in spectator mode
      */
     public boolean isSpectator() {
         return spectator;

@@ -73,7 +73,7 @@ public class GameManager {
      * Checks if a Game is existing by this name
      *
      * @param name the name we search for
-     * @return
+     * @return true if a game by that name is existing
      */
     public boolean isExisting(String name) {
         return arenas.containsKey(name);
@@ -83,7 +83,7 @@ public class GameManager {
      * Checks if a Game is existing by Game instance
      *
      * @param arena the game we look for
-     * @return
+     * @return true if that game is existing
      */
     public boolean isExisting(Game arena) {
         return arenas.containsValue(arena);
@@ -93,7 +93,7 @@ public class GameManager {
      * Gets the Game instance of an arena name or null if its not existing
      *
      * @param name The name of a game
-     * @return
+     * @return the game this name belongs to
      */
     public Game getArena(String name) {
         return arenas.get(name);
@@ -113,7 +113,7 @@ public class GameManager {
      * Get a Game instance by ID
      *
      * @param id the id we look for
-     * @return
+     * @return the game this id belongs to
      */
     public Game getArena(int id) {
         for (Game a : arenas.values()) {
@@ -126,7 +126,7 @@ public class GameManager {
      * Gets the game a player is in or null if he is not in a game
      *
      * @param p the player we search for
-     * @return
+     * @return the game this player is in or null
      */
     public Game getArena(Player p) {
         for (Game a : arenas.values()) {
@@ -138,7 +138,7 @@ public class GameManager {
     /**
      * Returns a modifyable HashMap containing all Games
      *
-     * @return
+     * @return a map containg all arenas
      */
     public HashMap<String, Game> getArenas() {
         return arenas;
