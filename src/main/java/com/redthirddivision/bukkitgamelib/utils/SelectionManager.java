@@ -30,6 +30,12 @@ import org.bukkit.plugin.Plugin;
  */
 public class SelectionManager {
 
+    /**
+     * Gets the Selection a Player made with WorldEdit.
+     * Index: 0 = min, 1 = max
+     * @param p
+     * @return 
+     */
     public static Location[] getSelection(Player p) {
         WorldEditPlugin we = getWorldEdit();
         Selection sel = we.getSelection(p);
@@ -41,6 +47,10 @@ public class SelectionManager {
         return new Location[]{min, max};
     }
 
+    /**
+     * Get the WorldEdit instance
+     * @return 
+     */
     public static WorldEditPlugin getWorldEdit() {
         Plugin worldEdit = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
         if (worldEdit instanceof WorldEditPlugin) {

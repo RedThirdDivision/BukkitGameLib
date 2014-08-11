@@ -43,6 +43,11 @@ public class PlayerData {
     private final boolean flying;
     private boolean spectator = false;
 
+    /**
+     * Stores all stuff like inventory, xp, health, maxhealth... in the RAM and completely resets a Player
+     * @param p the player to reset
+     * @param a the game the player is in
+     */
     public PlayerData(Player p, Game a) {
         this.player = p;
         this.a = a;
@@ -70,6 +75,9 @@ public class PlayerData {
         player.updateInventory();
     }
 
+    /**
+     * Gives the Player contained in this instance all his stuff back
+     */
     public void restorePlayerData() {
         if (player == null) return;
         player.setAllowFlight(flying);
@@ -84,18 +92,35 @@ public class PlayerData {
         player.setSleepingIgnored(false);
     }
 
+    /**
+     * Checks if this instance is used for a Player
+     * @param p the Player we want to look for
+     * @return 
+     */
     public boolean isForPlayer(Player p) {
         return player.getUniqueId().equals(p.getUniqueId());
     }
 
+    /**
+     * Returns the Player instance stored in this object
+     * @return 
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Checks if the Player is spectating
+     * @return 
+     */
     public boolean isSpectator() {
         return spectator;
     }
 
+    /**
+     * Put the player in spectating mode. 
+     * WARNING: You should use {@link com.redthirddivision.bukkitgamelib.Game#setSpectator(org.bukkit.entity.Player)} for this!
+     */
     public void startSpectating() {
         spectator = true;
 

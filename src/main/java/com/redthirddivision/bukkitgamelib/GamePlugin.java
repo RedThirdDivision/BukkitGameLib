@@ -32,8 +32,14 @@ public abstract class GamePlugin extends JavaPlugin {
     
     private GameManager manager;
     
+    /**
+     * Called when the plugin is allowed to load stuff, does the same like Bukkits onEnable method
+     */
     public abstract void onPluginStart();
     
+    /**
+     * Called when the plugin is allowed to stop stuff, does the same like Bukkits onDisable method
+     */
     public abstract void onPluginStop();
     
     @Override
@@ -55,6 +61,10 @@ public abstract class GamePlugin extends JavaPlugin {
         onPluginStop();
     }
     
+    /**
+     * The GameManager of this plugin
+     * @return {@link com.redthirddivision.bukkitgamelib.arena.GameManager}
+     */
     public GameManager getGameManager() {
         return manager;
     }

@@ -229,10 +229,10 @@ public abstract class Game {
         String pre = "";
         switch (type) {
             case INFO:
-                pre = "§a" + owner.getName() + "§7 ";
+                pre = "§a[" + owner.getName() + "]§7 ";
                 break;
             case ERROR:
-                pre = "§4" + owner.getName() + "§7 ";
+                pre = "§4[" + owner.getName() + "]§7 ";
                 break;
         }
         p.sendMessage(pre + msg);

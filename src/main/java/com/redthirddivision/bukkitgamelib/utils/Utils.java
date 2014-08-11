@@ -38,20 +38,40 @@ import org.bukkit.inventory.meta.SkullMeta;
  */
 public class Utils {
 
-    public static String replaceColors(String string) {
-        return string.replaceAll("&((?i)[0-9a-fk-or])", "§$1");
+    /**
+     * Replaces all possible ColorCodes starting with & to a String minecraft understands
+     * @param message
+     * @return 
+     */
+    public static String replaceColors(String message) {
+        return message.replaceAll("&((?i)[0-9a-fk-or])", "§$1");
     }
 
+    /**
+     * Removes all color codes form a String
+     * @param string
+     * @return 
+     */
     public static String removeColors(String string) {
         return string.replaceAll("§((?i)[0-9a-fk-or])", "");
     }
 
+    /**
+     * USed to transform a Location object to a String
+     * @param l
+     * @return 
+     */
     public static String serialLocation(Location l) {
         int pitch = Integer.valueOf(String.valueOf(l.getPitch()).split("\\.")[0]);
         int yaw = Integer.valueOf(String.valueOf(l.getYaw()).split("\\.")[0]);
         return l.getX() + ";" + l.getY() + ";" + l.getZ() + ";" + l.getWorld().getName() + ";" + yaw + ";" + pitch;
     }
 
+    /**
+     * Used to get a Location object from a serialized String using {@link #serialLocation(org.bukkit.Location)}
+     * @param s
+     * @return 
+     */
     public static Location deserialLocation(String s) {
         String[] a = s.split(";");
         World w = Bukkit.getWorld(a[3]);
@@ -65,17 +85,33 @@ public class Utils {
         return l;
     }
 
+    /**
+     * Gets the Block a Player is looking at
+     * @param player
+     * @param range
+     * @return 
+     */
     public static Block getBlockLooking(Player player, int range) {
         Block b = player.getTargetBlock(null, range);
         return b;
 
     }
 
+    /**
+     * Gets the Location a Player is looking at.
+     * @param player
+     * @param range
+     * @return 
+     */
     public static Location getLocationLooking(Player player, int range) {
         Block b = getBlockLooking(player, range);
         return b.getLocation();
     }
 
+    /**
+     * Completely cleares a players inventory including armor
+     * @param p 
+     */
     public static void clearInventory(Player p) {
         p.getInventory().clear();
         p.getInventory().setBoots(new ItemStack(Material.AIR));
@@ -84,6 +120,11 @@ public class Utils {
         p.getInventory().setLeggings(new ItemStack(Material.AIR));
     }
 
+    /**
+     * Creates an inventory containing all player heads to use for spectator mode.
+     * @param a
+     * @return 
+     */
     public static Inventory getSpectatorInventory(Game a) {
         Inventory ret = Bukkit.createInventory(null, 9 * 5, "Alive: ");
         for (PlayerData pd : a.getAlivePlayers()) {
@@ -97,14 +138,20 @@ public class Utils {
         return ret;
     }
 
+    /**
+     * Sends a message to a player
+     * @param p
+     * @param type
+     * @param msg 
+     */
     public static void sendMessage(Player p, MessageType type, String msg) {
         String pre = "";
         switch (type) {
             case INFO:
-                pre = "§a" + GameManager.getInstance().getPlugin().getName() + "§7 ";
+                pre = "§a[" + GameManager.getInstance().getPlugin().getName() + "]§7 ";
                 break;
             case ERROR:
-                pre = "§4" + GameManager.getInstance().getPlugin().getName() + "§7 ";
+                pre = "§4[" + GameManager.getInstance().getPlugin().getName() + "]§7 ";
                 break;
         }
         p.sendMessage(pre + msg);
