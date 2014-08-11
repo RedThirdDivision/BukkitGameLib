@@ -49,6 +49,11 @@
     </developers>
     
     <distributionManagement>
+        <site>
+            <id>redthirddivision.com/javadocs</id>
+            <url>http://redthirddivision.com/javadocs/r3dbukkitgamelib/</url>
+        </site>
+        
         <repository>
             <id>r3d</id>
             <url>ftp://ftp.redthirddivision.com/maven-repo/</url>
