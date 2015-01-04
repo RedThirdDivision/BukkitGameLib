@@ -36,7 +36,7 @@ import org.bukkit.entity.Player;
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> Game.java
  *
- * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
 public abstract class Game {
 

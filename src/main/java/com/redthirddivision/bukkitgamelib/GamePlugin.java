@@ -26,7 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> GamePlugin.java
  *
- * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
 public abstract class GamePlugin extends JavaPlugin {
 

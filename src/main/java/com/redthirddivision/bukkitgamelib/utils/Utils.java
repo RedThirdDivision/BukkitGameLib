@@ -38,7 +38,7 @@ import org.bukkit.inventory.meta.SkullMeta;
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> Utils.java
  *
- * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
 public class Utils {
 

@@ -26,7 +26,7 @@ import org.bukkit.plugin.Plugin;
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> SelectionManager.java
  *
- * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
+ * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
 public class SelectionManager {
 
