@@ -17,4 +17,4 @@ Used IDEs
 
 How to use
 ------------
-See the documentation at * [Documentation](http://docs.redthirddivision.com/bukkitgamelib)
+See the documentation at [Documentation](http://docs.redthirddivision.com/bukkitgamelib)
