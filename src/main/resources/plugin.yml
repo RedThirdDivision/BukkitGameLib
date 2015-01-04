@@ -1,0 +1,5 @@
+name: ${project.artifactId}
+version: ${project.version}
+author: RedThirdDivision
+
+main: com.redthirddivision.bukkitgamelib.Main

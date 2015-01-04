@@ -30,19 +30,8 @@ public class GameManager {
 
     private final HashMap<String, Game> arenas = new HashMap<>();
     private final GamePlugin pl;
-    private static GameManager INSTANCE;
-
-    /**
-     * Use this to get the instance of the GameManager
-     *
-     * @return {@link com.redthirddivision.bukkitgamelib.arena.GameManager#INSTANCE}
-     */
-    public static GameManager getInstance() {
-        return INSTANCE;
-    }
 
     public GameManager(GamePlugin plugin) {
-        INSTANCE = this;
         this.pl = plugin;
     }
 

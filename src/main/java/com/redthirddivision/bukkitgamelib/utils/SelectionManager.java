@@ -33,6 +33,7 @@ public class SelectionManager {
     /**
      * Gets the Selection a Player made with WorldEdit.
      * Index: 0 = min, 1 = max
+     *
      * @param p the player who made the selection
      * @return an Array containg the Selection
      */
@@ -49,11 +50,12 @@ public class SelectionManager {
 
     /**
      * Get the WorldEdit instance
+     *
      * @return the instance of WorldEdit
      */
     public static WorldEditPlugin getWorldEdit() {
         Plugin worldEdit = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if (worldEdit instanceof WorldEditPlugin) {
+        if (worldEdit instanceof WorldEditPlugin && worldEdit.isEnabled()) {
             return (WorldEditPlugin) worldEdit;
         } else {
             return null;

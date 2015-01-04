@@ -45,6 +45,7 @@ public class PlayerData {
 
     /**
      * Stores all stuff like inventory, xp, health, maxhealth... in the RAM and completely resets a Player
+     *
      * @param p the player to reset
      * @param a the game the player is in
      */
@@ -94,6 +95,7 @@ public class PlayerData {
 
     /**
      * Checks if this instance is used for a Player
+     *
      * @param p the Player we want to look for
      * @return true if this instance belongs to the player
      */
@@ -103,6 +105,7 @@ public class PlayerData {
 
     /**
      * Returns the Player instance stored in this object
+     *
      * @return the player
      */
     public Player getPlayer() {
@@ -111,6 +114,7 @@ public class PlayerData {
 
     /**
      * Checks if the Player is spectating
+     *
      * @return true if the player is in spectator mode
      */
     public boolean isSpectator() {
@@ -118,7 +122,7 @@ public class PlayerData {
     }
 
     /**
-     * Put the player in spectating mode. 
+     * Put the player in spectating mode.
      * WARNING: You should use {@link com.redthirddivision.bukkitgamelib.Game#setSpectator(org.bukkit.entity.Player)} for this!
      */
     public void startSpectating() {
@@ -128,22 +132,14 @@ public class PlayerData {
             alive.getPlayer().hidePlayer(player);
         }
 
-        Utils.clearInventory(player);
+        a.getOwningPlugin().getServer().getScheduler().scheduleSyncDelayedTask(a.getOwningPlugin(), new Runnable() {
 
-        ItemStack compass = new ItemStack(Material.COMPASS);
-        ItemMeta meta = compass.getItemMeta();
-        meta.setDisplayName("§6Teleport");
-        compass.setItemMeta(meta);
-
-        ItemStack ball = new ItemStack(Material.SLIME_BALL);
-        ItemMeta ballmeta = ball.getItemMeta();
-        ballmeta.setDisplayName("§5Quit");
-        ball.setItemMeta(ballmeta);
-
-        player.getInventory().addItem(compass, ball);
-        player.setAllowFlight(true);
-
-        a.onPlayerStartSpectating(player);
+            @Override
+            public void run() {
+                Utils.setSpectatorInventory(player);
+                player.setAllowFlight(true);
+            }
+        }, 5);
 
         a.sendMessage(player, MessageType.INFO, "You are now spectating the game.");
     }

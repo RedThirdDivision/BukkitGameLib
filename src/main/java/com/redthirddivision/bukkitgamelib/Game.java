@@ -12,19 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package com.redthirddivision.bukkitgamelib;
 
-import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
+import com.redthirddivision.bukkitgamelib.title.ActionbarTitleObject;
+import com.redthirddivision.bukkitgamelib.utils.Cuboid;
+import com.redthirddivision.bukkitgamelib.utils.Utils;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.Sound;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -59,7 +63,7 @@ public abstract class Game {
      * @param sign the join sign
      * @param joinPermission the permission needed to use the join sign
      */
-    public Game(int id, String name, GamePlugin owner, ArenaState state, Location[] selection, int minplayers, int maxplayers, Sign sign, String joinPermission) {
+    public Game(int id, String name, GamePlugin owner, ArenaState state, Location[] selection, int minplayers, int maxplayers, Location sign, String joinPermission) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -67,10 +71,18 @@ public abstract class Game {
         this.max = selection[1];
         this.minplayers = minplayers;
         this.maxplayers = maxplayers;
-        this.sign = sign;
+
+        BlockState signState = sign.getBlock().getState();
+        if (!(signState instanceof Sign)) {
+            signState.setType(Material.WALL_SIGN);
+            signState.update(true);
+            signState = sign.getBlock().getState();
+        }
+
+        this.sign = (Sign) signState;
         this.joinPermission = joinPermission;
         updateStatusAndSign(state);
-        GameManager.getInstance().load(this);
+        owner.getGameManager().load(this);
     }
 
     /**
@@ -239,6 +251,31 @@ public abstract class Game {
     }
 
     /**
+     * Used to send a colored message to a player using the actionBar
+     *
+     * @param p the receiver of the message
+     * @param type the type of the message
+     * @param msg the actual message without color codes
+     */
+    public void sendActionMessage(Player p, MessageType type, String msg) {
+        if (!Utils.isPlayerRightVersion(p)) {
+            sendMessage(p, type, msg);
+            return;
+        }
+        String pre = "";
+        switch (type) {
+            case INFO:
+                pre = "§a[" + owner.getName() + "]§7 ";
+                break;
+            case ERROR:
+                pre = "§4[" + owner.getName() + "]§7 ";
+                break;
+        }
+        ActionbarTitleObject action = new ActionbarTitleObject(pre + msg);
+        action.send(p);
+    }
+
+    /**
      * Broadcasts a message to all the players in the game (Spectators included)
      *
      * @param type the type of the message
@@ -247,6 +284,18 @@ public abstract class Game {
     public void broadcastMessage(MessageType type, String msg) {
         for (PlayerData pd : getAllDatas()) {
             sendMessage(pd.getPlayer(), type, msg);
+        }
+    }
+
+    /**
+     * Broadcasts an action-message to all the players in the game (Spectators included)
+     *
+     * @param type the type of the message
+     * @param msg the actual message without color codes
+     */
+    public void broadcastActionMessage(MessageType type, String msg) {
+        for (PlayerData pd : getAllDatas()) {
+            sendActionMessage(pd.getPlayer(), type, msg);
         }
     }
 
@@ -264,16 +313,20 @@ public abstract class Game {
 
         if (alive.isEmpty()) {
             updateStatusAndSign(ArenaState.WON);
-            stop(null);
+            stop();
             return;
         } else if (alive.size() == 1) {
             updateStatusAndSign(ArenaState.WON);
-            stop(alive.get(0).getPlayer());
+            stop();
             return;
         }
 
-        updateStatusAndSign(state);
-        pd.startSpectating();
+        onPlayerStartSpectating(p);
+
+        if (state == ArenaState.STARTED) {
+            updateStatusAndSign(state);
+            pd.startSpectating();
+        }
     }
 
     /**
@@ -282,7 +335,7 @@ public abstract class Game {
      * @param p the player to add
      */
     public void addPlayer(final Player p) {
-        if (GameManager.getInstance().getArena(p) != null) {
+        if (owner.getGameManager().getArena(p) != null) {
             sendMessage(p, MessageType.ERROR, "You can't be in more than one game at a time.");
             return;
         }
@@ -346,10 +399,10 @@ public abstract class Game {
         if (state != ArenaState.WON) {
             if (alive.isEmpty()) {
                 updateStatusAndSign(ArenaState.WON);
-                stop(null);
+                stop();
             } else if (alive.size() == 1) {
                 updateStatusAndSign(ArenaState.WON);
-                stop(alive.get(0).getPlayer());
+                stop();
             }
             updateStatusAndSign(state);
         }
@@ -423,7 +476,7 @@ public abstract class Game {
                     if (alive.size() < minplayers) {
                         broadcastMessage(MessageType.ERROR, "Not enough players joined the game.");
                         Bukkit.getServer().getScheduler().cancelTask(taskid);
-                        stop(null);
+                        stop();
                         return;
                     }
 
@@ -450,19 +503,10 @@ public abstract class Game {
      *
      * @param winner if set, the Player who won the game
      */
-    public void stop(final Player winner) {
+    public void stop() {
         onArenaStop();
         updateStatusAndSign(ArenaState.WON);
-        if (winner != null) {
-            sendMessage(winner, MessageType.INFO, "Congratulations you won the game!");
-        }
         for (PlayerData pd : getAllDatas()) {
-            if (winner != null) {
-                sendMessage(pd.getPlayer(), MessageType.INFO, winner.getDisplayName() + " won the game!");
-            } else {
-                sendMessage(pd.getPlayer(), MessageType.INFO, "Nobody won the game :(");
-            }
-
             for (PlayerData other : getAllDatas()) {
                 pd.getPlayer().showPlayer(other.getPlayer());
                 other.getPlayer().showPlayer(pd.getPlayer());
@@ -500,11 +544,20 @@ public abstract class Game {
     public void updateStatusAndSign(ArenaState state) {
         this.state = state;
         onStatusChange();
-        this.sign.setLine(0, "§6[" + GameManager.getInstance().getName() + "]");
+        this.sign.setLine(0, "§6[" + owner.getGameManager().getName() + "]");
         this.sign.setLine(1, name);
         this.sign.setLine(2, state.getText());
         this.sign.setLine(3, "§a" + alive.size() + "§r/§c" + spectator.size() + "§r/§7" + maxplayers);
         this.sign.update(true);
+    }
+
+    /**
+     * Returns an {@link com.redthirddivision.minigames.utils.Cuboid} representing the selection of the arena.
+     *
+     * @return {@link com.redthirddivision.minigames.utils.Cuboid}
+     */
+    public Cuboid getArena() {
+        return new Cuboid(min, max);
     }
 
     /**

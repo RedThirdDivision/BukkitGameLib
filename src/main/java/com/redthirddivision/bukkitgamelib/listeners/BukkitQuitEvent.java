@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.arena.GameManager;
+import com.redthirddivision.bukkitgamelib.GamePlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -25,22 +25,28 @@ import org.bukkit.event.player.PlayerQuitEvent;
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> BukkitQuitEvent.java
- * 
+ *
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class BukkitQuitEvent implements Listener {
 
+    private final GamePlugin owner;
+
+    public BukkitQuitEvent(final GamePlugin owner) {
+        this.owner = owner;
+    }
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        if (GameManager.getInstance().getArena(e.getPlayer()) == null) return;
-        Game a = GameManager.getInstance().getArena(e.getPlayer());
+        if (owner.getGameManager().getArena(e.getPlayer()) == null) return;
+        Game a = owner.getGameManager().getArena(e.getPlayer());
         a.removePlayer(e.getPlayer());
     }
 
     @EventHandler
     public void onPlayerKick(PlayerKickEvent e) {
-        if (GameManager.getInstance().getArena(e.getPlayer()) == null) return;
-        Game a = GameManager.getInstance().getArena(e.getPlayer());
+        if (owner.getGameManager().getArena(e.getPlayer()) == null) return;
+        Game a = owner.getGameManager().getArena(e.getPlayer());
         a.removePlayer(e.getPlayer());
     }
 

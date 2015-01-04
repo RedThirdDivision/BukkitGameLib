@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.arena.GameManager;
+import com.redthirddivision.bukkitgamelib.GamePlugin;
 import com.redthirddivision.bukkitgamelib.utils.Utils;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import org.bukkit.block.Sign;
@@ -28,10 +28,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
  * <strong>File:</strong> BukkitSignEvent.java
- * 
+ *
  * @author <a href="http://jeter.vc-network.com">TheJeterLP</a>
  */
 public class BukkitSignEvent implements Listener {
+
+    private final GamePlugin owner;
+
+    public BukkitSignEvent(final GamePlugin owner) {
+        this.owner = owner;
+    }
 
     @EventHandler
     public void onLobbySign(PlayerInteractEvent event) {
@@ -39,12 +45,12 @@ public class BukkitSignEvent implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getClickedBlock().getState() instanceof Sign) {
             Sign s = (Sign) event.getClickedBlock().getState();
-            if (s.getLine(0).equalsIgnoreCase("§6[" + GameManager.getInstance().getName() + "]")) {
+            if (s.getLine(0).equalsIgnoreCase("§6[" + owner.getGameManager().getName() + "]")) {
                 String name = s.getLine(1);
-                Game a = GameManager.getInstance().getArena(name);
+                Game a = owner.getGameManager().getArena(name);
 
                 if (a == null) {
-                    Utils.sendMessage(event.getPlayer(), MessageType.ERROR, "That game is not exisiting.");
+                    Utils.sendMessage(event.getPlayer(), MessageType.ERROR, "That game is not exisiting.", owner);
                     return;
                 }
 

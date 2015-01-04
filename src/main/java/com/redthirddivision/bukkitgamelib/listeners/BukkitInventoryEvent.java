@@ -16,6 +16,7 @@
 package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
+import com.redthirddivision.bukkitgamelib.GamePlugin;
 import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
@@ -39,14 +40,20 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BukkitInventoryEvent implements Listener {
 
+    private final GamePlugin owner;
+    
+    public BukkitInventoryEvent(final GamePlugin owner) {
+        this.owner = owner;
+    }
+    
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onItemClick(InventoryClickEvent e) {
         if (!(e.getWhoClicked() instanceof Player)) return;
         Player p = (Player) e.getWhoClicked();
 
-        if (GameManager.getInstance().getArena(p) == null) return;
+        if (owner.getGameManager().getArena(p) == null) return;
 
-        Game a = GameManager.getInstance().getArena(p);
+        Game a = owner.getGameManager().getArena(p);
         PlayerData pd = a.getPlayer(p);
         if (!pd.isSpectator()) return;
         if (!e.getInventory().getTitle().startsWith("Alive: ")) return;
@@ -70,7 +77,7 @@ public class BukkitInventoryEvent implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInteract(final PlayerInteractEvent e) {
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Game a = GameManager.getInstance().getArena(e.getPlayer());
+            Game a = owner.getGameManager().getArena(e.getPlayer());
 
             if (a == null) return;
 
