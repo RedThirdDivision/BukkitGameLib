@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.utils;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.GamePlugin;
+import com.redthirddivision.bukkitgamelib.Minigame;
 import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import java.lang.reflect.Method;
@@ -158,7 +158,7 @@ public class Utils {
      * @param msg the message to send
      * @param plugin the owning plugin, used for the message prefix
      */
-    public static void sendMessage(Player p, MessageType type, String msg, GamePlugin plugin) {
+    public static void sendMessage(Player p, MessageType type, String msg, Minigame plugin) {
         String pre = "";
         switch (type) {
             case INFO:

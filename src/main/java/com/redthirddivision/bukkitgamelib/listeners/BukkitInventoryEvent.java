@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.GamePlugin;
+import com.redthirddivision.bukkitgamelib.Minigame;
 import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
@@ -40,9 +40,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BukkitInventoryEvent implements Listener {
 
-    private final GamePlugin owner;
+    private final Minigame owner;
     
-    public BukkitInventoryEvent(final GamePlugin owner) {
+    public BukkitInventoryEvent(final Minigame owner) {
         this.owner = owner;
     }
     

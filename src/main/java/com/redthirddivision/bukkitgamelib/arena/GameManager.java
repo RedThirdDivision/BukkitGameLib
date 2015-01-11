@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.arena;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.GamePlugin;
+import com.redthirddivision.bukkitgamelib.Minigame;
 import java.util.HashMap;
 import org.bukkit.entity.Player;
 
@@ -29,18 +29,18 @@ import org.bukkit.entity.Player;
 public class GameManager {
 
     private final HashMap<String, Game> arenas = new HashMap<>();
-    private final GamePlugin pl;
+    private final Minigame pl;
 
-    public GameManager(GamePlugin plugin) {
+    public GameManager(Minigame plugin) {
         this.pl = plugin;
     }
 
     /**
-     * Gets the GamePlugin which belongs to this GameManager instance
+     * Gets the Minigame which belongs to this GameManager instance
      *
-     * @return {@link com.redthirddivision.bukkitgamelib.GamePlugin}
+     * @return {@link com.redthirddivision.bukkitgamelib.Minigame}
      */
-    public GamePlugin getPlugin() {
+    public Minigame getPlugin() {
         return pl;
     }
 

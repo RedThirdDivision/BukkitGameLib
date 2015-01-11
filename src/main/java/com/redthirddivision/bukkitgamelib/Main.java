@@ -15,6 +15,7 @@
  */
 package com.redthirddivision.bukkitgamelib;
 
+import com.redthirddivision.bukkitgamelib.plugin.MinigameManager;
 import com.redthirddivision.bukkitgamelib.utils.Config;
 import com.redthirddivision.bukkitgamelib.utils.Metrics;
 import de.thejeterlp.bukkit.updater.Updater;
@@ -41,7 +42,7 @@ public class Main extends JavaPlugin {
         INSTANCE = this;
 
         Config.load();
-
+        
         if (Config.METRICS_ENABLED.getBoolean()) {
             try {
                 Metrics m = new Metrics(this);
@@ -53,6 +54,8 @@ public class Main extends JavaPlugin {
 
         Updater u = new Updater(this, -1, "r3dbukkitgamelib");
         u.search();
+        
+        MinigameManager.loadMinigames();
 
         long timeTook = System.currentTimeMillis() - currentTimeMillisStart;
         getLogger().info("Minigame library has been started. It took " + timeTook + " miliseconds.");
@@ -63,6 +66,8 @@ public class Main extends JavaPlugin {
         long currentTimeMillisStart = System.currentTimeMillis();
         getLogger().info("Minigame Library is shutting down!");
 
+        MinigameManager.disable();
+        
         INSTANCE = null;
 
         long timeTook = System.currentTimeMillis() - currentTimeMillisStart;

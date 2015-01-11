@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.GamePlugin;
+import com.redthirddivision.bukkitgamelib.Minigame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -30,9 +30,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class BukkitQuitEvent implements Listener {
 
-    private final GamePlugin owner;
+    private final Minigame owner;
 
-    public BukkitQuitEvent(final GamePlugin owner) {
+    public BukkitQuitEvent(final Minigame owner) {
         this.owner = owner;
     }
 

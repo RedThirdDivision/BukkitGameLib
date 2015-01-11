@@ -44,7 +44,7 @@ public abstract class Game {
     private final ArrayList<PlayerData> alive = new ArrayList<>(), spectator = new ArrayList<>();
     private final Location min, max;
     private final String name, joinPermission;
-    private final GamePlugin owner;
+    private final Minigame owner;
     private final Sign sign;
 
     private ArenaState state;
@@ -55,7 +55,7 @@ public abstract class Game {
      *
      * @param id the id of the arena, only used internal
      * @param name the name of teh arena
-     * @param owner the {@link com.redthirddivision.bukkitgamelib.GamePlugin} which owns this game
+     * @param owner the {@link com.redthirddivision.bukkitgamelib.Minigame} which owns this game
      * @param state the actual arenastate (should be stored in some kind of database)
      * @param selection the worldedit selection. Use {@link com.redthirddivision.bukkitgamelib.utils.SelectionManager#getSelection(org.bukkit.entity.Player) }
      * @param minplayers the min number of palyers needed to start the game
@@ -63,7 +63,7 @@ public abstract class Game {
      * @param sign the join sign
      * @param joinPermission the permission needed to use the join sign
      */
-    public Game(int id, String name, GamePlugin owner, ArenaState state, Location[] selection, int minplayers, int maxplayers, Location sign, String joinPermission) {
+    public Game(int id, String name, Minigame owner, ArenaState state, Location[] selection, int minplayers, int maxplayers, Location sign, String joinPermission) {
         this.id = id;
         this.name = name;
         this.owner = owner;
@@ -212,9 +212,9 @@ public abstract class Game {
     /**
      * Gets the plugin which is owning this Game
      *
-     * @return {@link com.redthirddivision.bukkitgamelib.GamePlugin}
+     * @return {@link com.redthirddivision.bukkitgamelib.Minigame}
      */
-    public GamePlugin getOwningPlugin() {
+    public Minigame getOwningPlugin() {
         return owner;
     }
 

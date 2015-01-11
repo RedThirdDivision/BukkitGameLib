@@ -24,11 +24,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
- * <strong>File:</strong> GamePlugin.java
+ * <strong>File:</strong> Minigame.java
  *
  * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
-public abstract class GamePlugin extends JavaPlugin {
+public abstract class Minigame extends JavaPlugin {
 
     private GameManager manager;
 

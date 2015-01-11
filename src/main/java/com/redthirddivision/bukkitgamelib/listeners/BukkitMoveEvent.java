@@ -16,7 +16,7 @@
 package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
-import com.redthirddivision.bukkitgamelib.GamePlugin;
+import com.redthirddivision.bukkitgamelib.Minigame;
 import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
@@ -33,9 +33,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
  */
 public class BukkitMoveEvent implements Listener {
     
-    private final GamePlugin owner;
+    private final Minigame owner;
 
-    public BukkitMoveEvent(final GamePlugin owner) {
+    public BukkitMoveEvent(final Minigame owner) {
         this.owner = owner;
     }
 
