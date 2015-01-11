@@ -40,18 +40,17 @@ public class MinigameManager {
         folder.mkdirs();
 
         for (File f : folder.listFiles()) {
-            if (!f.getName().endsWith(".jar") || !f.isFile()) {
-                try {
-                    Plugin p = manager.loadPlugin(f);
-                    if (p instanceof Minigame) {
-                        manager.enablePlugin(p);
-                        games.put(p.getDescription().getName(), (Minigame) p);
-                    } else {
-                        Main.getInstance().getLogger().severe("The plugin is not a Minigame!");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (!f.getName().endsWith(".jar") || !f.isFile()) continue;
+            try {
+                Plugin p = manager.loadPlugin(f);
+                if (p instanceof Minigame) {
+                    manager.enablePlugin(p);
+                    games.put(p.getDescription().getName(), (Minigame) p);
+                } else {
+                    Main.getInstance().getLogger().severe("The plugin is not a Minigame!");
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
