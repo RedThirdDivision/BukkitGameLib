@@ -190,16 +190,8 @@ public class Utils {
 
     public static boolean isPlayerOnePointEight(Player p) {
         try {
-            Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
-            Object con = nmsPlayer.getClass().getField("playerConnection").get(nmsPlayer);
-            Object networkManager = con.getClass().getField("networkManager").get(con);
-
-            Method getVersion = networkManager.getClass().getMethod("getVersion");
-
-            Object version = getVersion.invoke(networkManager);
-            int versionnum = (Integer) version;
-
-            return versionnum >= 47;
+            String version = ReflectionTool.getMinecraftVersionNumber();
+            return Integer.valueOf(version.split("_")[1]) >= 8;
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

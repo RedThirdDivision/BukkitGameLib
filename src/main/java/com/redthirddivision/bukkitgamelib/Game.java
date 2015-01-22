@@ -16,7 +16,6 @@
 package com.redthirddivision.bukkitgamelib;
 
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
-import com.redthirddivision.bukkitgamelib.title.ActionbarTitleObject;
 import com.redthirddivision.bukkitgamelib.utils.Cuboid;
 import com.redthirddivision.bukkitgamelib.utils.Utils;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
@@ -252,31 +251,6 @@ public abstract class Game {
     }
 
     /**
-     * Used to send a colored message to a player using the actionBar
-     *
-     * @param p the receiver of the message
-     * @param type the type of the message
-     * @param msg the actual message without color codes
-     */
-    public void sendActionMessage(Player p, MessageType type, String msg) {
-        if (!Utils.isPlayerOnePointEight(p)) {
-            sendMessage(p, type, msg);
-            return;
-        }
-        String pre = "";
-        switch (type) {
-            case INFO:
-                pre = "§a[" + owner.getName() + "]§7 ";
-                break;
-            case ERROR:
-                pre = "§4[" + owner.getName() + "]§7 ";
-                break;
-        }
-        ActionbarTitleObject action = new ActionbarTitleObject(pre + msg);
-        action.send(p);
-    }
-
-    /**
      * Broadcasts a message to all the players in the game (Spectators included)
      *
      * @param type the type of the message
@@ -287,19 +261,7 @@ public abstract class Game {
             sendMessage(pd.getPlayer(), type, msg);
         }
     }
-
-    /**
-     * Broadcasts an action-message to all the players in the game (Spectators included)
-     *
-     * @param type the type of the message
-     * @param msg the actual message without color codes
-     */
-    public void broadcastActionMessage(MessageType type, String msg) {
-        for (PlayerData pd : getAllDatas()) {
-            sendActionMessage(pd.getPlayer(), type, msg);
-        }
-    }
-
+   
     /**
      * Puts a Player in spectator mode
      *
@@ -462,7 +424,7 @@ public abstract class Game {
                     for (PlayerData pd : alive) {
                         pd.getPlayer().playNote(pd.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G));
                         pd.getPlayer().setExp(0);
-                        pd.getPlayer().setLevel(countdown);
+                        pd.getPlayer().setLevel(countdown);                       
                     }
 
                     if (state == ArenaState.COUNTDING_DOWN) {
@@ -546,7 +508,7 @@ public abstract class Game {
         this.state = state;
         onStatusChange();
         this.sign.setLine(0, "§6[" + owner.getGameManager().getName() + "]");
-        this.sign.setLine(1, name);
+        this.sign.setLine(1, id + " - " + name);
         this.sign.setLine(2, state.getText());
         this.sign.setLine(3, "§a" + alive.size() + "§r/§c" + spectator.size() + "§r/§7" + maxplayers);
         this.sign.update(true);

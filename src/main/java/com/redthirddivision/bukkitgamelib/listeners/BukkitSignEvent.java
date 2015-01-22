@@ -46,8 +46,8 @@ public class BukkitSignEvent implements Listener {
         if (event.getClickedBlock().getState() instanceof Sign) {
             Sign s = (Sign) event.getClickedBlock().getState();
             if (s.getLine(0).equalsIgnoreCase("§6[" + owner.getGameManager().getName() + "]")) {
-                String name = s.getLine(1);
-                Game a = owner.getGameManager().getArena(name);
+                int id = Integer.valueOf(s.getLine(1).split(" - ")[0]);
+                Game a = owner.getGameManager().getArena(id);
 
                 if (a == null) {
                     Utils.sendMessage(event.getPlayer(), MessageType.ERROR, "That game is not exisiting.", owner);
