@@ -169,7 +169,7 @@ public class CommandManager implements CommandExecutor {
     }
 
     private boolean executeCommand(Command c, CommandSender s, String[] args) {
-        CommandArgs a = CommandArgs.getArgs(args, 0);
+        CommandArgs a = CommandArgs.getArgs(c.getName(), args, 0);
         Sender sender;
         if (s instanceof Player) {
             sender = Sender.PLAYER;
@@ -184,7 +184,7 @@ public class CommandManager implements CommandExecutor {
 
             BaseCommand bc = m.getAnnotation(BaseCommand.class);
             if (!bc.subCommand().trim().isEmpty() && bc.subCommand().equalsIgnoreCase(a.getString(0))) {
-                a = CommandArgs.getArgs(args, 1);
+                a = CommandArgs.getArgs(c.getName(), args, 1);
             }
 
             CommandResult cr;

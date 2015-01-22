@@ -37,7 +37,7 @@ public class ActionbarTitleObject {
     
     public void send(Player p) {
         try {
-            if (!Utils.isPlayerRightVersion(p)) return;
+            if (!Utils.isPlayerOnePointEight(p)) return;
             
             Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
             Object con = nmsPlayer.getClass().getField("playerConnection").get(nmsPlayer);

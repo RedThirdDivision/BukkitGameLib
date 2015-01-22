@@ -17,7 +17,6 @@ package com.redthirddivision.bukkitgamelib.utils;
 
 import com.redthirddivision.bukkitgamelib.Game;
 import com.redthirddivision.bukkitgamelib.Minigame;
-import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -28,6 +27,7 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -151,14 +151,14 @@ public class Utils {
     }
 
     /**
-     * Sends a message to a player
+     * Sends a message to a CommandSender
      *
-     * @param p the receiver of the message
+     * @param sender the receiver of the message
      * @param type the type of the message, used for coloring
      * @param msg the message to send
      * @param plugin the owning plugin, used for the message prefix
      */
-    public static void sendMessage(Player p, MessageType type, String msg, Minigame plugin) {
+    public static void sendMessage(CommandSender sender, MessageType type, String msg, Minigame plugin) {
         String pre = "";
         switch (type) {
             case INFO:
@@ -168,7 +168,7 @@ public class Utils {
                 pre = "§4[" + plugin.getName() + "]§7 ";
                 break;
         }
-        p.sendMessage(pre + msg);
+        sender.sendMessage(pre + msg);
     }
 
     public static void setSpectatorInventory(Player p) {
@@ -188,7 +188,7 @@ public class Utils {
         p.getInventory().addItem(slime);
     }
 
-    public static boolean isPlayerRightVersion(Player p) {
+    public static boolean isPlayerOnePointEight(Player p) {
         try {
             Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
             Object con = nmsPlayer.getClass().getField("playerConnection").get(nmsPlayer);

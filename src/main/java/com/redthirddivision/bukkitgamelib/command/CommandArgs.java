@@ -29,20 +29,22 @@ public class CommandArgs {
 
     private final String[] args;
     private final int length;
+    private final String base;
 
-    public static CommandArgs getArgs(String[] args, int start) {
+    public static CommandArgs getArgs(String base, String[] args, int start) {
         String a = "";
         int length = 0;
         for (int i = start; i < args.length; i++) {
             a += args[i] + ";";
             length++;
         }
-        return new CommandArgs(a.split(";"), length);
+        return new CommandArgs(a.split(";"), length, base);
     }
 
-    private CommandArgs(String[] args, int length) {
+    private CommandArgs(String[] args, int length, String base) {
         this.args = args;
         this.length = length;
+        this.base = base;
     }
 
     public String getString(int number) {
@@ -104,4 +106,10 @@ public class CommandArgs {
         }
         return null;
     }
+
+    public String getBase() {
+        return base;
+    }
+    
+    
 }

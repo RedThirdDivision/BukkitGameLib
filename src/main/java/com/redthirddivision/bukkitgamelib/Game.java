@@ -30,6 +30,7 @@ import org.bukkit.Note;
 import org.bukkit.Sound;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
@@ -233,11 +234,11 @@ public abstract class Game {
     /**
      * Used to send a colored message to a player
      *
-     * @param p the receiver of the message
+     * @param sender the receiver of the message
      * @param type the type of the message
      * @param msg the actual message without color codes
      */
-    public void sendMessage(Player p, MessageType type, String msg) {
+    public void sendMessage(CommandSender sender, MessageType type, String msg) {
         String pre = "";
         switch (type) {
             case INFO:
@@ -247,7 +248,7 @@ public abstract class Game {
                 pre = "§4[" + owner.getName() + "]§7 ";
                 break;
         }
-        p.sendMessage(pre + msg);
+        sender.sendMessage(pre + msg);
     }
 
     /**
@@ -258,7 +259,7 @@ public abstract class Game {
      * @param msg the actual message without color codes
      */
     public void sendActionMessage(Player p, MessageType type, String msg) {
-        if (!Utils.isPlayerRightVersion(p)) {
+        if (!Utils.isPlayerOnePointEight(p)) {
             sendMessage(p, type, msg);
             return;
         }
