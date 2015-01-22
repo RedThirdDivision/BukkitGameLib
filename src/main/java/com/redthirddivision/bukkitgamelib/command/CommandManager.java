@@ -103,7 +103,7 @@ public class CommandManager implements CommandExecutor {
      */
     public void registerClass(Class<?> clazz) {
         if (!clazz.isAnnotationPresent(CommandHandler.class)) {
-            plugin.getLogger().severe("Class ist kein CommandHandler");
+            plugin.getLogger().severe("Class is not a CommandHandler!");
             return;
         }
 
@@ -219,7 +219,11 @@ public class CommandManager implements CommandExecutor {
                 s.sendMessage(cr.getMessage().replace("%cmd%", bc.command()).replace("%perm%", perm));
             }
         } else {
-            s.sendMessage("§4Du kannst den Befehl leider nicht ausführen.!");
+            if (sender == Sender.CONSOLE) {
+                s.sendMessage("§4You are not allowed to execute this command. Please try as a Player.!");
+            } else {
+                s.sendMessage("§4You are not allowed to execute this command. Please try from the console.!");
+            }
         }
 
         return true;
