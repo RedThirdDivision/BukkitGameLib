@@ -17,7 +17,6 @@ package com.redthirddivision.bukkitgamelib;
 
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import com.redthirddivision.bukkitgamelib.utils.Cuboid;
-import com.redthirddivision.bukkitgamelib.utils.Utils;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
@@ -261,7 +260,7 @@ public abstract class Game {
             sendMessage(pd.getPlayer(), type, msg);
         }
     }
-   
+
     /**
      * Puts a Player in spectator mode
      *
@@ -424,7 +423,7 @@ public abstract class Game {
                     for (PlayerData pd : alive) {
                         pd.getPlayer().playNote(pd.getPlayer().getLocation(), Instrument.PIANO, Note.natural(1, Note.Tone.G));
                         pd.getPlayer().setExp(0);
-                        pd.getPlayer().setLevel(countdown);                       
+                        pd.getPlayer().setLevel(countdown);
                     }
 
                     if (state == ArenaState.COUNTDING_DOWN) {
@@ -507,8 +506,14 @@ public abstract class Game {
     public void updateStatusAndSign(ArenaState state) {
         this.state = state;
         onStatusChange();
+
+        String line1 = id + " - " + name;
+        if (line1.length() > 16) {
+            line1 = line1.substring(0, 16);
+        }
+
         this.sign.setLine(0, "§6[" + owner.getGameManager().getName() + "]");
-        this.sign.setLine(1, id + " - " + name);
+        this.sign.setLine(1, line1);
         this.sign.setLine(2, state.getText());
         this.sign.setLine(3, "§a" + alive.size() + "§r/§c" + spectator.size() + "§r/§7" + maxplayers);
         this.sign.update(true);
@@ -530,11 +535,7 @@ public abstract class Game {
      * @return {@link java.lang.Boolean}
      */
     public boolean containsBlock(Location v) {
-        if (v.getWorld() != min.getWorld()) return false;
-        final double x = v.getX();
-        final double y = v.getY();
-        final double z = v.getZ();
-        return (x >= min.getBlockX() && x < max.getBlockX() + 1) && (y >= min.getBlockY() && y < max.getBlockY() + 1) && (z >= min.getBlockZ() && z < max.getBlockZ() + 1);
+        return getArena().contains(v);
     }
 
     public enum ArenaState {
