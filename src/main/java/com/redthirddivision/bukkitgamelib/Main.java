@@ -16,12 +16,6 @@
 package com.redthirddivision.bukkitgamelib;
 
 import com.redthirddivision.bukkitgamelib.plugin.MinigameManager;
-import com.redthirddivision.bukkitgamelib.utils.Config;
-import com.redthirddivision.bukkitgamelib.utils.Metrics;
-import de.thejeterlp.bukkit.updater.Updater;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -40,20 +34,9 @@ public class Main extends JavaPlugin {
         getLogger().info("Minigame Library has been started!");
 
         INSTANCE = this;
-
-        Config.load();
-        
-        if (Config.METRICS_ENABLED.getBoolean()) {
-            try {
-                Metrics m = new Metrics(this);
-                m.start();
-            } catch (IOException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        Updater u = new Updater(this, -1, "r3dbukkitgamelib");
-        u.search();
+                
+        //Updater u = new Updater(this, -1, "minigamelibrary");
+        //u.search();
         
         MinigameManager.loadMinigames();
 
