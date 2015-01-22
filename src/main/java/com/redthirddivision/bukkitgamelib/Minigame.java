@@ -31,7 +31,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
 public abstract class Minigame extends JavaPlugin {
-
+    
     private GameManager manager;
     private CommandManager cmdManager;
 
@@ -44,7 +44,7 @@ public abstract class Minigame extends JavaPlugin {
      * Called when the plugin is allowed to stop stuff, does the same like Bukkits onDisable method
      */
     public abstract void onPluginStop();
-
+    
     @Override
     public void onEnable() {
         manager = new GameManager(this);
@@ -55,7 +55,7 @@ public abstract class Minigame extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BukkitSignEvent(this), this);
         onPluginStart();
     }
-
+    
     @Override
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
@@ -91,5 +91,5 @@ public abstract class Minigame extends JavaPlugin {
     public PluginDescriptionFile getCorePluginYML() {
         return Main.getInstance().getDescription();
     }
-
+    
 }
