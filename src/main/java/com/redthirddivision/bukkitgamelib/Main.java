@@ -16,6 +16,7 @@
 package com.redthirddivision.bukkitgamelib;
 
 import com.redthirddivision.bukkitgamelib.plugin.MinigameManager;
+import de.thejeterlp.bukkit.updater.Updater;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -35,8 +36,8 @@ public class Main extends JavaPlugin {
 
         INSTANCE = this;
                 
-        //Updater u = new Updater(this, -1, "minigamelibrary");
-        //u.search();
+        Updater u = new Updater(this, 88808, "minigamelibrary");
+        u.search();
         
         MinigameManager.loadMinigames();
 

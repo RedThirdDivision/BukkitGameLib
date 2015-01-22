@@ -4,7 +4,7 @@
   <groupId>com.redthirddivision</groupId>
   <artifactId>BukkitGameLib</artifactId>
   <name>R3DBukkitGameLib</name>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <description>Library to make MiniGames with the Bukkit-api</description>
   <inceptionYear>2014</inceptionYear>
   <developers>
