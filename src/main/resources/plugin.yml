@@ -5,3 +5,4 @@ author: RedThirdDivision
 authors: [TheJeterLP, BossLetsPlays]
 
 main: com.redthirddivision.bukkitgamelib.Main
+softdepend: [WorldEdit]
