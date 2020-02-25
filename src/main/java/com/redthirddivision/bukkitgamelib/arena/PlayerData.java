@@ -16,14 +16,13 @@
 package com.redthirddivision.bukkitgamelib.arena;
 
 import com.redthirddivision.bukkitgamelib.Game;
+import com.redthirddivision.bukkitgamelib.Main;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import com.redthirddivision.bukkitgamelib.utils.Utils;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * <strong>Project:</strong> R3DBukkitGameLib <br>
@@ -39,7 +38,7 @@ public class PlayerData {
     private final int level, foodlevel;
     private final float xp;
     private final GameMode gm;
-    private final double maxhealth, health;
+    private final double health;
     private final boolean flying;
     private boolean spectator = false;
 
@@ -59,15 +58,13 @@ public class PlayerData {
         xp = p.getExp();
         level = p.getLevel();
         foodlevel = p.getFoodLevel();
-        maxhealth = ((Damageable) p).getMaxHealth();
-        health = ((Damageable) p).getHealth();
+        health = p.getHealth();
         flying = p.getAllowFlight();
 
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(false);
         player.setFlying(false);
         player.setSleepingIgnored(true);
-        player.setMaxHealth(20.0);
         player.setHealth(20.0);
         player.setFoodLevel(20);
         player.setExp(0F);
@@ -82,7 +79,6 @@ public class PlayerData {
     public void restorePlayerData() {
         if (player == null) return;
         player.setAllowFlight(flying);
-        player.setMaxHealth(maxhealth);
         player.setFoodLevel(foodlevel);
         player.setHealth(health);
         player.setGameMode(gm);
@@ -129,7 +125,7 @@ public class PlayerData {
         spectator = true;
 
         for (PlayerData alive : a.getAlivePlayers()) {
-            alive.getPlayer().hidePlayer(player);
+            alive.getPlayer().hidePlayer(Main.getInstance(), player);
         }
 
         a.getOwningPlugin().getServer().getScheduler().scheduleSyncDelayedTask(a.getOwningPlugin(), new Runnable() {

@@ -17,7 +17,6 @@ package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
 import com.redthirddivision.bukkitgamelib.Minigame;
-import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import com.redthirddivision.bukkitgamelib.utils.Utils;
@@ -56,11 +55,11 @@ public class BukkitInventoryEvent implements Listener {
         Game a = owner.getGameManager().getArena(p);
         PlayerData pd = a.getPlayer(p);
         if (!pd.isSpectator()) return;
-        if (!e.getInventory().getTitle().startsWith("Alive: ")) return;
+        if (!e.getView().getTitle().startsWith("Alive: ")) return;
 
         ItemStack skull = e.getCurrentItem();
 
-        if (skull.getType() != Material.SKULL_ITEM) return;
+        if (skull.getType() != Material.PLAYER_HEAD) return;
 
         String target = skull.getItemMeta().getDisplayName();
         Player pt = Bukkit.getPlayer(target);

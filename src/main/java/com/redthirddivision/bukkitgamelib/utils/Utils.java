@@ -18,7 +18,6 @@ package com.redthirddivision.bukkitgamelib.utils;
 import com.redthirddivision.bukkitgamelib.Game;
 import com.redthirddivision.bukkitgamelib.Minigame;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -43,7 +42,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class Utils {
 
     /**
-     * Replaces all possible ColorCodes starting with &amp; to a String minecraft understands
+     * Replaces all possible ColorCodes starting with &amp; to a String
+     * minecraft understands
      *
      * @param message the message which contains the unreplaced color codes
      * @return the message with replaced color codes
@@ -75,7 +75,8 @@ public class Utils {
     }
 
     /**
-     * Used to get a Location object from a serialized String using {@link #serialLocation(org.bukkit.Location)}
+     * Used to get a Location object from a serialized String using
+     * {@link #serialLocation(org.bukkit.Location)}
      *
      * @param s the String we want to get the Location from
      * @return a Location made out of the String
@@ -132,7 +133,8 @@ public class Utils {
     }
 
     /**
-     * Creates an inventory containing all player heads to use for spectator mode.
+     * Creates an inventory containing all player heads to use for spectator
+     * mode.
      *
      * @param a the game we want to create the inventory from
      * @return an Inventory which is used internally
@@ -140,12 +142,11 @@ public class Utils {
     public static Inventory getSpectatorInventory(Game a) {
         Inventory ret = Bukkit.createInventory(null, 9 * 5, "Alive: ");
         for (PlayerData pd : a.getAlivePlayers()) {
-            final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-            SkullMeta meta = (SkullMeta) stack.getItemMeta();
-            meta.setDisplayName(pd.getPlayer().getName());
-            meta.setOwner(pd.getPlayer().getName());
-            stack.setItemMeta(meta);
-            ret.addItem(stack);
+            ItemStack prev = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta pMeta = (SkullMeta) prev.getItemMeta();
+            pMeta.setOwningPlayer(pd.getPlayer());
+            prev.setItemMeta(pMeta);
+            ret.addItem(prev);
         }
         return ret;
     }
@@ -186,16 +187,6 @@ public class Utils {
         sMeta.setLore(Arrays.asList("Click to leave."));
         slime.setItemMeta(sMeta);
         p.getInventory().addItem(slime);
-    }
-
-    public static boolean isPlayerOnePointEight(Player p) {
-        try {
-            String version = ReflectionTool.getMinecraftVersionNumber();
-            return Integer.valueOf(version.split("_")[1]) >= 8;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
     }
 
     public enum MessageType {

@@ -17,7 +17,6 @@ package com.redthirddivision.bukkitgamelib.listeners;
 
 import com.redthirddivision.bukkitgamelib.Game;
 import com.redthirddivision.bukkitgamelib.Minigame;
-import com.redthirddivision.bukkitgamelib.arena.GameManager;
 import com.redthirddivision.bukkitgamelib.arena.PlayerData;
 import com.redthirddivision.bukkitgamelib.utils.Utils.MessageType;
 import org.bukkit.event.EventHandler;
@@ -43,7 +42,7 @@ public class BukkitMoveEvent implements Listener {
     public void onPlayerWalkOutOfArena(PlayerMoveEvent e) {
         Game a = owner.getGameManager().getArena(e.getPlayer());
         if (a == null || e.getPlayer().isOp()) return;
-        if (!a.containsBlock(e.getTo())) {
+        if (!a.containsBlock(e.getTo()) && a.isStarted()) {
             
             PlayerData pd = a.getPlayer(e.getPlayer());
             if (pd.isSpectator()) return;
@@ -52,7 +51,6 @@ public class BukkitMoveEvent implements Listener {
             e.getPlayer().teleport(e.getFrom());
             a.sendMessage(e.getPlayer(), MessageType.ERROR, "You are not allowed to walk out of the arena!");
         }
-
     }
 
 }

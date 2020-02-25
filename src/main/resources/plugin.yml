@@ -6,3 +6,4 @@ authors: [TheJeterLP, BossLetsPlays]
 
 main: com.redthirddivision.bukkitgamelib.Main
 softdepend: [WorldEdit]
+api-version: 1.13
