@@ -39,14 +39,15 @@ import org.bukkit.entity.Player;
  * @author <a href="http://jpeter.redthirddivision.com">TheJeterLP</a>
  */
 public abstract class Game {
-    
+
     private final int id, minplayers, maxplayers;
     private final ArrayList<PlayerData> alive = new ArrayList<>(), spectator = new ArrayList<>();
     private final Location min, max;
     private final String name, joinPermission;
     private final Minigame owner;
     private final Sign sign;
-    
+    private PlayerData winner = null;
+
     private ArenaState state;
     private int taskid;
 
@@ -75,14 +76,14 @@ public abstract class Game {
         this.max = selection[1];
         this.minplayers = minplayers;
         this.maxplayers = maxplayers;
-        
+
         BlockState signState = sign.getBlock().getState();
         if (!(signState instanceof Sign)) {
             signState.setType(Material.OAK_WALL_SIGN);
             signState.update(true);
             signState = sign.getBlock().getState();
         }
-        
+
         this.sign = (Sign) signState;
         this.joinPermission = joinPermission;
         updateStatusAndSign(state);
@@ -276,22 +277,23 @@ public abstract class Game {
             return;
         }
         PlayerData pd = getPlayer(p);
-        
+
         alive.remove(pd);
         spectator.add(pd);
-        
+
         if (alive.isEmpty()) {
             updateStatusAndSign(ArenaState.WON);
             stop();
             return;
         } else if (alive.size() == 1) {
+            setWinner(alive.get(0));
             updateStatusAndSign(ArenaState.WON);
             stop();
             return;
         }
-        
+
         onPlayerStartSpectating(p);
-        
+
         if (state == ArenaState.STARTED) {
             updateStatusAndSign(state);
             pd.startSpectating();
@@ -308,35 +310,35 @@ public abstract class Game {
             sendMessage(p, MessageType.ERROR, "You can't be in more than one game at a time.");
             return;
         }
-        
+
         if (!p.hasPermission(joinPermission)) {
             sendMessage(p, MessageType.ERROR, "You do not have the permission to join this game.");
             return;
         }
-        
+
         if (state == ArenaState.DISABLED) {
             sendMessage(p, MessageType.ERROR, "The game is actually disabled.");
             return;
         }
-        
+
         if (getAlive() >= maxplayers) {
             sendMessage(p, MessageType.ERROR, "The game is already full.");
             return;
         }
-        
+
         if (state == ArenaState.STARTED || state == ArenaState.WON) {
             sendMessage(p, MessageType.ERROR, "The game has already started.");
             return;
         }
-        
+
         if (getPlayer(p) != null) {
             return;
         }
-        
+
         if (state == ArenaState.WAITING) {
             start();
         }
-        
+
         alive.add(new PlayerData(p, this));
         broadcastMessage(MessageType.INFO, p.getDisplayName() + " has joined the game.");
         updateStatusAndSign(state);
@@ -350,25 +352,25 @@ public abstract class Game {
      */
     public void removePlayer(final PlayerData pl) {
         pl.restorePlayerData();
-        
+
         if (alive.contains(pl)) {
             alive.remove(pl);
         }
-        
+
         if (spectator.contains(pl)) {
             spectator.remove(pl);
         }
-        
+
         for (PlayerData pd : getAllDatas()) {
-            pd.getPlayer().showPlayer(pl.getPlayer());
-            pl.getPlayer().showPlayer(pd.getPlayer());
+            pd.getPlayer().showPlayer(Main.getInstance(), pl.getPlayer());
+            pl.getPlayer().showPlayer(Main.getInstance(), pd.getPlayer());
             if (state != ArenaState.WON) {
                 sendMessage(pd.getPlayer(), MessageType.INFO, pl.getPlayer().getDisplayName() + " has left the game.");
             }
         }
-        
+
         onPlayerRemoveFromArena(pl.getPlayer());
-        
+
         if (state != ArenaState.WON) {
             if (alive.isEmpty()) {
                 updateStatusAndSign(ArenaState.WON);
@@ -424,10 +426,10 @@ public abstract class Game {
      */
     public void start() {
         updateStatusAndSign(ArenaState.COUNTDING_DOWN);
-        
+
         taskid = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(owner, new Runnable() {
             private int countdown = 30;
-            
+
             @Override
             public void run() {
                 if (countdown > 0) {
@@ -436,13 +438,13 @@ public abstract class Game {
                         pd.getPlayer().setExp(0);
                         pd.getPlayer().setLevel(countdown);
                     }
-                    
+
                     if (state == ArenaState.COUNTDING_DOWN) {
                         sign.setLine(2, state.getText() + "(" + countdown + ")");
                         sign.update(true);
                     }
                 }
-                
+
                 if (countdown == 30 || countdown == 15 || (countdown <= 10 && countdown > 0)) {
                     broadcastMessage(MessageType.INFO, "The game starts in " + countdown + " seconds.");
                 } else if (countdown == 0) {
@@ -455,17 +457,17 @@ public abstract class Game {
 
                     //ARENA STARTED
                     onArenaStart();
-                    
+
                     for (PlayerData pd : alive) {
                         pd.getPlayer().setLevel(0);
                         pd.getPlayer().playSound(pd.getPlayer().getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 3, 1);
                     }
-                    
+
                     updateStatusAndSign(ArenaState.STARTED);
                     broadcastMessage(MessageType.INFO, "The game has started!");
                     Bukkit.getServer().getScheduler().cancelTask(taskid);
                 }
-                
+
                 countdown--;
             }
         }, 0, 20);
@@ -473,24 +475,26 @@ public abstract class Game {
 
     /**
      * Stops the game
-     *
-     * @param winner if set, the Player who won the game
      */
     public void stop() {
         onArenaStop();
         updateStatusAndSign(ArenaState.WON);
         for (PlayerData pd : getAllDatas()) {
             for (PlayerData other : getAllDatas()) {
-                pd.getPlayer().showPlayer(other.getPlayer());
-                other.getPlayer().showPlayer(pd.getPlayer());
+                pd.getPlayer().showPlayer(Main.getInstance(), other.getPlayer());
+                other.getPlayer().showPlayer(Main.getInstance(), pd.getPlayer());
             }
         }
+
+        String winnerName = this.winner == null ? "noone" : this.winner.getPlayer().getName();
+        broadcastMessage(MessageType.INFO, "Game is over, " + winnerName + " won!");
+
         Bukkit.getScheduler().cancelTask(this.taskid);
-        
+
         for (PlayerData data : getAllDatas()) {
             removePlayer(data);
         }
-        
+
         alive.clear();
         spectator.clear();
         updateStatusAndSign(ArenaState.WAITING);
@@ -519,12 +523,12 @@ public abstract class Game {
     public void updateStatusAndSign(ArenaState state) {
         this.state = state;
         onStatusChange();
-        
+
         String line1 = id + " - " + name;
         if (line1.length() > 16) {
             line1 = line1.substring(0, 16);
         }
-        
+
         this.sign.setLine(0, "§6[" + owner.getGameManager().getName() + "]");
         this.sign.setLine(1, line1);
         this.sign.setLine(2, state.getText());
@@ -551,21 +555,29 @@ public abstract class Game {
     public boolean containsBlock(Location v) {
         return getArena().contains(BukkitAdapter.asBlockVector(v));
     }
-    
+
+    public void setWinner(PlayerData winner) {
+        this.winner = winner;
+    }
+
+    public PlayerData getWinner() {
+        return this.winner;
+    }
+
     public enum ArenaState {
-        
+
         WAITING(ChatColor.GREEN + "Lobby"),
         COUNTDING_DOWN(ChatColor.GREEN + "Countdown"),
         STARTED(ChatColor.AQUA + "Ingame"),
         WON(ChatColor.AQUA + "Winner!"),
         DISABLED(ChatColor.RED + "Disabled");
-        
+
         private final String text;
-        
+
         private ArenaState(String text) {
             this.text = text;
         }
-        
+
         public String getText() {
             return text;
         }
