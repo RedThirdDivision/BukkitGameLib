@@ -309,19 +309,23 @@ public abstract class Game {
             sendMessage(p, MessageType.ERROR, "The game has already started.");
             return;
         }
-
+        
         if (getPlayer(p) != null) {
             return;
         }
-
-        if (state == ArenaState.WAITING) {
-            start();
-        }
-
+        
         alive.add(new PlayerData(p, this));
         broadcastMessage(MessageType.INFO, p.getDisplayName() + " has joined the game.");
         updateStatusAndSign(state);
         onPlayerAddToArena(p);
+
+        if (alive.size() >= minplayers) {
+            start();
+        } else {
+            sendMessage(p, MessageType.INFO, "You joined the game. There are " + (minplayers - alive.size()) + " other players missing until the game starts");
+        }
+
+        
     }
 
     /**
@@ -388,7 +392,7 @@ public abstract class Game {
      * @return {@link java.lang.Boolean}
      */
     public boolean isStarted() {
-        return state != ArenaState.DISABLED && state != ArenaState.WAITING;
+        return state == ArenaState.STARTED;
     }
 
     /**
@@ -511,7 +515,7 @@ public abstract class Game {
         this.sign.setLine(0, "§6[" + owner.getGameManager().getName() + "]");
         this.sign.setLine(1, line1);
         this.sign.setLine(2, state.getText());
-        this.sign.setLine(3, "§a" + alive.size() + "§r/§c" + spectator.size() + "§r/§7" + maxplayers);
+        this.sign.setLine(3, "§a" + (alive.size() + spectator.size()) + "§r/§7" + maxplayers);
         this.sign.update(true);
     }
 
@@ -545,7 +549,7 @@ public abstract class Game {
 
     public enum ArenaState {
 
-        WAITING(ChatColor.GREEN + "Lobby"),
+        WAITING(ChatColor.GREEN + "Waiting"),
         COUNTDING_DOWN(ChatColor.GREEN + "Countdown"),
         STARTED(ChatColor.AQUA + "Ingame"),
         WON(ChatColor.AQUA + "Winner!"),
