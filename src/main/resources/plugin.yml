@@ -1,9 +1,7 @@
 name: ${project.artifactId}
 version: ${project.version}
-author: RedThirdDivision
+author: Jeter
 
-authors: [TheJeterLP, BossLetsPlays]
-
-main: com.redthirddivision.bukkitgamelib.Main
-softdepend: [WorldEdit]
+main: de.jeter.bukkitgamelib.Main
+depend: [WorldEdit]
 api-version: 1.13
