@@ -5,6 +5,7 @@ import de.jeter.bukkitgamelib.Main;
 import de.jeter.bukkitgamelib.utils.Utils.MessageType;
 import de.jeter.bukkitgamelib.utils.Utils;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,9 +20,11 @@ public class PlayerData {
     private final double health;
     private final boolean flying;
     private boolean spectator = false;
+    private final Location beforeJoin;
 
     /**
-     * Stores all stuff like inventory, xp, health, maxhealth... in the RAM and completely resets a Player
+     * Stores all stuff like inventory, xp, health, maxhealth... in the RAM and
+     * completely resets a Player
      *
      * @param p the player to reset
      * @param a the game the player is in
@@ -29,6 +32,8 @@ public class PlayerData {
     public PlayerData(Player p, Game a) {
         this.player = p;
         this.a = a;
+
+        beforeJoin = p.getLocation();
 
         inventory = p.getInventory().getContents();
         armor = p.getInventory().getArmorContents();
@@ -55,7 +60,9 @@ public class PlayerData {
      * Gives the Player contained in this instance all his stuff back
      */
     public void restorePlayerData() {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         player.setAllowFlight(flying);
         player.setFoodLevel(foodlevel);
         player.setHealth(health);
@@ -65,6 +72,7 @@ public class PlayerData {
         player.setExp(xp);
         player.setLevel(level);
         player.setSleepingIgnored(false);
+        player.teleport(beforeJoin);
     }
 
     /**
@@ -75,6 +83,10 @@ public class PlayerData {
      */
     public boolean isForPlayer(Player p) {
         return player.getUniqueId().equals(p.getUniqueId());
+    }
+
+    public Location getOriginalLocation() {
+        return this.beforeJoin;
     }
 
     /**
@@ -96,8 +108,9 @@ public class PlayerData {
     }
 
     /**
-     * Put the player in spectating mode.
-     * WARNING: You should use {@link com.redthirddivision.bukkitgamelib.Game#setSpectator(org.bukkit.entity.Player)} for this!
+     * Put the player in spectating mode. WARNING: You should use
+     * {@link com.redthirddivision.bukkitgamelib.Game#setSpectator(org.bukkit.entity.Player)}
+     * for this!
      */
     public void startSpectating() {
         spectator = true;

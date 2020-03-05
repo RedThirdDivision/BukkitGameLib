@@ -1,6 +1,5 @@
 package de.jeter.bukkitgamelib.command;
 
-import de.jeter.bukkitgamelib.command.BaseCommand.Sender;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,16 +12,31 @@ public class MethodContainer {
         methods = map;
     }
 
-    public Method getMethod(Sender s) {
+    protected Method getMethod(Sender s) {
         return methods.get(s);
     }
 
-    public Collection<Method> getMethods() {
+    protected Collection<Method> getMethods() {
         return methods.values();
     }
 
-    public HashMap<Sender, Method> getMethodMap() {
+    protected HashMap<Sender, Method> getMethodMap() {
         return methods;
     }
-    
+
+    @Override
+    public String toString() {
+        String ret = "MethodContainer:";
+        if (!methods.isEmpty()) {
+            for (Sender sender : methods.keySet()) {
+                Method method = methods.get(sender);
+
+                ret += " Sender: " + sender.toString() + " Method: " + (method != null ? method.getName() : "null") + " || ";
+            }
+        } else {
+            ret += " no methods registered";
+        }
+        return ret;
+    }
+
 }

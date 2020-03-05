@@ -36,8 +36,8 @@ public abstract class Game {
      *
      * @param id the id of the arena, only used internal
      * @param name the name of teh arena
-     * @param owner the {@link de.jeter.bukkitgamelib.Minigame}
-     * which owns this game
+     * @param owner the {@link de.jeter.bukkitgamelib.Minigame} which owns this
+     * game
      * @param state the actual arenastate (should be stored in some kind of
      * database)
      * @param selection the worldedit selection. Use {@link com.redthirddivision.bukkitgamelib.utils.SelectionManager#getSelection(org.bukkit.entity.Player)
@@ -309,11 +309,11 @@ public abstract class Game {
             sendMessage(p, MessageType.ERROR, "The game has already started.");
             return;
         }
-        
+
         if (getPlayer(p) != null) {
             return;
         }
-        
+
         alive.add(new PlayerData(p, this));
         broadcastMessage(MessageType.INFO, p.getDisplayName() + " has joined the game.");
         updateStatusAndSign(state);
@@ -325,7 +325,6 @@ public abstract class Game {
             sendMessage(p, MessageType.INFO, "You joined the game. There are " + (minplayers - alive.size()) + " other players missing until the game starts");
         }
 
-        
     }
 
     /**
@@ -515,7 +514,33 @@ public abstract class Game {
         this.sign.setLine(0, "§6[" + owner.getGameManager().getName() + "]");
         this.sign.setLine(1, line1);
         this.sign.setLine(2, state.getText());
-        this.sign.setLine(3, "§a" + (alive.size() + spectator.size()) + "§r/§7" + maxplayers);
+        switch (state) {
+            case WAITING: {
+                this.sign.setLine(3, "§a" + (alive.size() + spectator.size()) + "§r/§7" + maxplayers);
+                break;
+            }
+            case DISABLED: {
+                this.sign.setLine(3, "§7 0/0");
+                break;
+            }
+            case COUNTDING_DOWN: {
+                this.sign.setLine(3, "§a" + (alive.size() + spectator.size()) + "§r/§7" + maxplayers);
+                break;
+            }
+            case STARTED: {
+                this.sign.setLine(3, "§a" + alive.size() + "§r/§c" + spectator.size() + "§r/§7" + maxplayers);
+                break;
+            }
+            case WON: {
+                if (this.winner == null) {
+                    this.sign.setLine(3, "§aNoone");
+                } else {
+                    this.sign.setLine(3, "§a" + winner.getPlayer().getName());
+                }
+                break;
+            }
+        }
+
         this.sign.update(true);
     }
 

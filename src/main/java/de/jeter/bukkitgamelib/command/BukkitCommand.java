@@ -1,14 +1,13 @@
 package de.jeter.bukkitgamelib.command;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class BukkitCommand extends Command {
 
-    private CommandExecutor exe = null;
+    private CommandManager exe = null;
     private final List<String> aliases;
 
     protected BukkitCommand(String name, List<String> aliases) {
@@ -24,13 +23,21 @@ public class BukkitCommand extends Command {
         return false;
     }
 
-    public void setExecutor(CommandExecutor exe) {
+    public void setExecutor(CommandManager exe) {
         this.exe = exe;
     }
 
     @Override
+    public List<String> tabComplete(CommandSender sender, String alais, String[] args) {
+        if (this.exe != null) {
+            return exe.onTabComplete(sender, this, alais, args);
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public List<String> getAliases() {
-        return Collections.unmodifiableList(aliases);
+        return aliases;
     }
 
 }

@@ -9,12 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface BaseCommand {
 
-    public enum Sender {
-
-        PLAYER,
-        CONSOLE;
-    }
-    
     Sender sender();
 
     String command();
@@ -24,6 +18,8 @@ public @interface BaseCommand {
     String subCommand() default "";
     
     String aliases() default "";
+    
+    String[] helpArguments() default "addon";
 }
 
 

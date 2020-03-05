@@ -4,7 +4,6 @@ import de.jeter.bukkitgamelib.Game;
 import de.jeter.bukkitgamelib.Minigame;
 import de.jeter.bukkitgamelib.arena.PlayerData;
 import java.util.Arrays;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -62,14 +61,12 @@ public class Utils {
     public static Location deserialLocation(String s) {
         String[] a = s.split(";");
         World w = Bukkit.getWorld(a[3]);
-        Validate.notNull(w, "The world cannot be null!");
         double x = Double.parseDouble(a[0]);
         double y = Double.parseDouble(a[1]);
         double z = Double.parseDouble(a[2]);
         int yaw = Integer.parseInt(a[4]);
         int pitch = Integer.parseInt(a[5]);
-        Location l = new Location(w, x, y, z, yaw, pitch);
-        return l;
+        return new Location(w, x, y, z, yaw, pitch);
     }
 
     /**

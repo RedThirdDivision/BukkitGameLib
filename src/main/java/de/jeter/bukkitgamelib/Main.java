@@ -1,6 +1,8 @@
 package de.jeter.bukkitgamelib;
 
 import de.jeter.bukkitgamelib.plugin.MinigameManager;
+import de.jeter.bukkitgamelib.utils.LocaleManager;
+import de.jeter.bukkitgamelib.utils.Locales;
 import de.jeter.bukkitgamelib.utils.SelectionManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,6 +13,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         long currentTimeMillisStart = System.currentTimeMillis();
+        INSTANCE = this;
         getLogger().info("Minigame Library has been started!");
 
         if (SelectionManager.getWorldEdit() == null) {
@@ -19,8 +22,10 @@ public class Main extends JavaPlugin {
             return;
         }
 
-        INSTANCE = this;
-
+        Locales.load();
+        
+        LocaleManager.load();
+        
         MinigameManager.loadMinigames();
 
         long timeTook = System.currentTimeMillis() - currentTimeMillisStart;
